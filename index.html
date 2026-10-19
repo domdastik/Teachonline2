@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>School Records</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="School">
+<style>
+:root{--bg:#f3f7fc;--card:#ffffff;--tx:#1e2b3c;--mut:#6f8097;--bd:#e4ebf4;--ac:#3b82f6;--ac2:#eaf2ff;--acx:#fff;--sh:0 1px 2px rgba(30,60,110,.04),0 6px 20px rgba(30,60,110,.06);
+--ok:#15803d;--okb:#e7f7ee;--warn:#a16207;--warnb:#fff5dc;--bad:#c53030;--badb:#fdeaea;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#eaf3ff 0,var(--bg) 220px) no-repeat,var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--bd);padding:10px 14px 8px}
+.hrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;max-width:940px;margin:0 auto}
+.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#60a5fa,#34d3a0);color:#fff;font-weight:800;display:grid;place-items:center;font-size:17px;flex:none}
+header h1{font-size:17px;margin:0;flex:1;min-width:110px;font-weight:700}
+.role{font-size:12px;background:var(--ac2);color:#2563eb;border-radius:999px;padding:3px 10px;font-weight:600}
+.tabs{display:flex;gap:4px;margin:10px auto 0;max-width:940px;background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:4px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs button{flex:0 0 auto;border:0;background:transparent;color:var(--mut);font-weight:600;padding:8px 14px;white-space:nowrap}
+.tabs button.on{background:#fff;color:#2563eb;box-shadow:0 1px 4px rgba(30,60,110,.12)}
+main{max-width:940px;margin:0 auto;padding:16px 14px 30px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:var(--sh)}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+button,input,select{font:inherit;color:var(--tx)}
+input,select{background:#f8fbff;border:1px solid var(--bd);border-radius:10px;padding:9px 10px;min-width:0;outline:none}
+input:focus,select:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(59,130,246,.15);background:#fff}
+button{border:1px solid var(--bd);background:#fff;border-radius:10px;padding:9px 13px;cursor:pointer;font-weight:600}
+button:hover{background:var(--ac2)}
+button.p{background:var(--ac);color:#fff;border-color:var(--ac)}
+button.p:hover{background:#2f73e6}
+button.x{color:var(--bad);padding:4px 10px;border-color:transparent;background:transparent}
+button.x:hover{background:var(--badb)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row>input{flex:1;min-width:100px}
+.mut{color:var(--mut);font-size:13px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--bd);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+th{font-size:11.5px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+td input,td select{width:100%;padding:6px 8px}
+td input.n{width:68px}
+tr.click{cursor:pointer}
+.click{cursor:pointer}
+tr.click:hover td{background:#f5f9ff}
+tr.brk td{background:var(--ac2);font-style:italic;color:#2563eb;font-weight:600}
+.code{font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:12px;background:var(--ac2);color:#2563eb;border-radius:7px;padding:2px 7px}
+.chip{display:inline-block;font-weight:700;font-size:13px;border-radius:999px;padding:2px 10px;background:#eef2f7;color:var(--mut)}
+.chip.g-ok{background:var(--okb);color:var(--ok)}.chip.g-mid{background:var(--warnb);color:var(--warn)}.chip.g-bad{background:var(--badb);color:var(--bad)}
+.g-ok{color:var(--ok)}.g-mid{color:var(--warn)}.g-bad{color:var(--bad)}
+.bar{height:6px;border-radius:99px;background:#e9eff7;margin-top:5px;min-width:70px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#60a5fa,#34d3a0)}
+.avatar{display:inline-grid;place-items:center;border-radius:50%;color:#fff;font-weight:700;flex:none;vertical-align:middle}
+.who{display:flex;align-items:center;gap:10px;font-weight:600}
+.hero{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.hero b{font-size:20px;display:block}
+.banner{background:var(--warnb);border:1px solid #f4dfa6;color:var(--warn);border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:13px}
+.lock{color:var(--mut);font-size:13px;margin:-6px 0 10px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.stat{flex:1;min-width:105px;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:12px 14px;box-shadow:var(--sh)}
+.stat b{display:block;font-size:24px;margin-top:2px}
+.enr{display:inline-flex;gap:6px;align-items:center;margin:0 12px 6px 0}
+.enr input{width:auto}
+.pill{display:inline-flex;gap:6px;align-items:center;background:var(--ac2);color:#2563eb;border-radius:999px;padding:3px 6px 3px 12px;margin:0 6px 6px 0;font-weight:700;font-size:13px}
+.pill button{border:0;background:none;padding:0 4px;color:#2563eb;font-weight:700;cursor:pointer}
+.sched td,.sched th{text-align:center}
+#tres button{display:block;width:100%;text-align:left;margin-top:6px}
+#back{padding:7px 12px}
+textarea{background:#f8fbff;border:1px solid var(--bd);border-radius:10px;padding:9px 10px;font:inherit;color:var(--tx);width:100%;min-height:70px;resize:vertical;display:block}
+textarea:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(59,130,246,.15);background:#fff;outline:none}
+.seg{display:inline-flex;border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+.seg button{border:0;border-radius:0;background:#fff;color:var(--mut);padding:8px 11px;border-right:1px solid var(--bd)}
+.seg button:last-child{border-right:0}
+.seg button.on-present{background:var(--okb);color:var(--ok)}
+.seg button.on-absent{background:var(--badb);color:var(--bad)}
+.seg button.on-excused{background:var(--warnb);color:var(--warn)}
+.rc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.rc-row:last-child{border-bottom:0}
+.gatewrap{max-width:380px;margin:60px auto;text-align:center}
+.userchip{display:flex;align-items:center;gap:6px}
+.userchip span{max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media print{header,.noprint{display:none!important}body{background:#fff!important}main{padding:0;max-width:none}.card{box-shadow:none;border:0;padding:0}}
+</style>
+<style id="rpcss"></style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <button id="back" hidden>&larr;</button>
+    <div class="logo">S</div><h1 id="title">School Records</h1>
+    <span class="role" id="role"></span>
+    <span id="userchip"></span>
+    <button id="csv" hidden>Export CSV</button>
+  </div>
+  <div class="tabs" id="tabs"></div>
+</header>
+<main id="app"><p class="mut">Loading&hellip;</p></main>
+
+<!--
+  Firebase SDKs (compat build - works with plain script elements, no build step).
+  If you ever need a newer version, keep the "-compat" suffix on each file name.
+-->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+/* =====================================================================
+   1. PASTE YOUR FIREBASE CONFIG BELOW.
+   Firebase console -> Project settings (gear icon) -> General ->
+   "Your apps" -> the </> web app icon -> copy the firebaseConfig object.
+   See SETUP.md for the full walkthrough.
+   ===================================================================== */
+var FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCltzt0IusYUuG248DZLQeVMYjn1UtPEco",
+  authDomain: "school-24da7.firebaseapp.com",
+  projectId: "school-24da7",
+  storageBucket: "school-24da7.firebasestorage.app",
+  messagingSenderId: "931185987043",
+  appId: "1:931185987043:web:a1c4fd5f60ea56d20b64d6"
+};
+/* ===================================================================== */
+
+var TYPES=['test','assignment','exam'];
+var DEFAULT_W={test:30,assignment:20,exam:50};
+var roster={}, subjects={}, entries={}, weights=Object.assign({},DEFAULT_W), names={}, allowed={}, schedules={};
+var DEFAULT_TIMES=['08:00','08:50','09:40','10:30','11:20','12:10'];
+var periodTimes=DEFAULT_TIMES.slice();
+var DEFAULT_BREAKS=[{id:'b1',label:'Break 1',start:'09:40',end:'09:55'},{id:'b2',label:'Lunch',start:'11:35',end:'12:15'},{id:'b3',label:'Break 3',start:'13:55',end:'14:10'}];
+var breaks=DEFAULT_BREAKS.map(function(b){return Object.assign({},b)});
+var holidays={}, ttTeacher='';
+var subUnsubs={}, chains={}, assignments={}, asgCode='', asgOpen=null;
+var classes={}, announcements={}, clsOpen=null, clsAssignFor=null, newClsTeacher=null;
+var db=null,auth=null,myId=null,myName='',myEmail='',isAdmin=false,started=false;
+var tab='students',sel=null,filter='',mineOnly=null,banner='',assignFor=null,newTeacher=null,report=null,rcCode=null,rcDate=new Date().toISOString().slice(0,10),schoolName='School Records',schLevel='';
+
+function uid(){return Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function today(){return new Date().toISOString().slice(0,10)}
+function mean(a){return a.length?a.reduce(function(x,y){return x+y},0)/a.length:null}
+function fmt(v){return v==null?'\u2013':v.toFixed(1)+'%'}
+function cls(v){return v==null?'':v>=70?'g-ok':v>=50?'g-mid':'g-bad'}
+function tname(id){return id?((names[id]&&names[id].name)||'Teacher'):'Unassigned'}
+function ageFrom(dob){if(!dob)return null;var d=new Date(dob+'T00:00:00');if(isNaN(d))return null;var now=new Date(),age=now.getFullYear()-d.getFullYear(),m=now.getMonth()-d.getMonth();if(m<0||(m===0&&now.getDate()<d.getDate()))age--;return age>=0?age:null}
+function pill(v){return '<span class="chip '+cls(v)+'">'+fmt(v)+'</span>'}
+function bar(v){return '<div class="bar"><i style="width:'+(v==null?0:Math.max(0,Math.min(100,v)))+'%"></i></div>'}
+function av(name,sz){var n=(name||'?').trim(),p=n.split(/\s+/),ini=((p[0]||'?')[0]+((p.length>1?p[p.length-1][0]:'')||'')).toUpperCase(),hue=0;for(var i=0;i<n.length;i++)hue=(hue*31+n.charCodeAt(i))%360;sz=sz||32;
+  return '<span class="avatar" style="width:'+sz+'px;height:'+sz+'px;font-size:'+Math.round(sz*.4)+'px;background:hsl('+hue+',60%,62%)">'+esc(ini)+'</span>'}
+function K(sid,code){return sid+'_'+code}
+function saveFile(filename,data,mime){
+  try{var blob=new Blob([data],{type:mime||'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=filename;document.body.appendChild(a);a.click();
+    setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url)},1000)}
+  catch(e){banner='Could not start the download in this browser.';draw()}
+}
+
+/* ---------- data helpers ---------- */
+function enrolled(sid){return ((roster[sid]&&roster[sid].subjects)||[]).filter(function(c){return subjects[c]})}
+function entryFor(tid,sid,code){return (entries[tid]&&entries[tid][K(sid,code)])||null}
+/* An entry only counts if it sits in the subtree of the teacher the owner assigned to that code. */
+function validEntry(sid,code){
+  var sub=subjects[code];if(!sub||!sub.teacherId)return null;
+  if(enrolled(sid).indexOf(code)<0)return null;
+  return entryFor(sub.teacherId,sid,code)||{grades:[],absences:[]};
+}
+function subjectAvg(sid,code){
+  var e=validEntry(sid,code);if(!e)return null;
+  var g=(e.grades||[]).filter(function(x){return +x.max>0&&x.score!==''&&x.score!=null});
+  if(!g.length)return null;
+  var num=0,den=0;
+  TYPES.forEach(function(t){
+    var m=mean(g.filter(function(x){return x.type===t}).map(function(x){return +x.score/+x.max*100}));
+    var w=+weights[t]||0;if(m!=null&&w>0){num+=m*w;den+=w}
+  });
+  return den>0?num/den:mean(g.map(function(x){return +x.score/+x.max*100}));
+}
+function overall(sid){return mean(enrolled(sid).map(function(c){return subjectAvg(sid,c)}).filter(function(x){return x!=null}))}
+function absTotal(sid,unexc){
+  var n=0;enrolled(sid).forEach(function(c){var e=validEntry(sid,c);if(e)(e.absences||[]).forEach(function(a){if(!unexc||!a.excused)n++})});return n;
+}
+function myCodes(){return Object.keys(subjects).filter(function(c){return myId&&subjects[c].teacherId===myId})}
+function canEditSub(code){var s=subjects[code];return !!(s&&s.teacherId&&(isAdmin||s.teacherId===myId))}
+function canEditClass(level){var c=classes[level];return !!(level&&(isAdmin||(c&&c.formTeacherId===myId)))}
+function moveStudentToClass(id,newLevel){var s=clone(roster[id]);s.level=newLevel;roster[id]=s;put('roster/'+id,s);render()}
+
+/* ---------- writes ---------- */
+function fail(e){banner='Save refused: '+((e&&e.message)||e)+' (you can only change data for your own subjects).';render()}
+function put(path,data){chains[path]=(chains[path]||Promise.resolve()).then(function(){return db.doc(path).set(data)}).catch(fail)}
+function del(path){chains[path]=(chains[path]||Promise.resolve()).then(function(){return db.doc(path).delete()}).catch(fail)}
+function mutateEntry(sid,code,fn){
+  if(!canEditSub(code)){banner='You cannot edit '+code+'.';render();return}
+  var tid=subjects[code].teacherId,cur=entryFor(tid,sid,code);
+  var e=cur?clone(cur):{student:sid,subject:code,grades:[],absences:[]};
+  e.grades=e.grades||[];e.absences=e.absences||[];fn(e);
+  entries[tid]=entries[tid]||{};entries[tid][K(sid,code)]=e;
+  put('marks/'+tid+'/entries/'+K(sid,code),clone(e));render();
+}
+function saveRoster(id){put('roster/'+id,clone(roster[id]))}
+function assignmentGrade(sid,code,aid){var e=validEntry(sid,code);if(!e)return null;return (e.grades||[]).filter(function(g){return g.assignmentId===aid})[0]||null}
+function setAssignmentMark(sid,code,a,status,score){
+  mutateEntry(sid,code,function(en){
+    var g=en.grades.filter(function(x){return x.assignmentId===a.id})[0];
+    if(!g){g={id:uid(),assignmentId:a.id,type:a.type,title:a.title,date:a.dueDate||today(),score:'',max:a.points,status:'missing'};en.grades.push(g)}
+    g.max=a.points;g.type=a.type;g.title=a.title;
+    if(status!=null)g.status=status;
+    if(score!=null)g.score=score;
+  });
+}
+
+/* ---------- auth & subscriptions ---------- */
+function isConfigured(){return FIREBASE_CONFIG.apiKey&&FIREBASE_CONFIG.apiKey.indexOf('PASTE_')!==0}
+function getWithRetry(path,tries){
+  tries=tries||5;
+  return db.doc(path).get().catch(function(e){
+    if(tries>1&&/offline/i.test((e&&e.message)||'')){
+      return new Promise(function(res){setTimeout(res,800)}).then(function(){return getWithRetry(path,tries-1)});
+    }
+    throw e;
+  });
+}
+function syncTeacherSubs(){
+  var want={};Object.keys(subjects).forEach(function(c){if(subjects[c].teacherId)want[subjects[c].teacherId]=1});
+  Object.keys(subUnsubs).forEach(function(t){if(!want[t]){subUnsubs[t]();delete subUnsubs[t];delete entries[t]}});
+  Object.keys(want).forEach(function(t){
+    if(subUnsubs[t])return;
+    subUnsubs[t]=db.collection('marks/'+t+'/entries').onSnapshot(function(snap){
+      var m={};snap.docs.forEach(function(d){m[d.id]=clone(d.data())});entries[t]=m;render();
+    },function(){});
+  });
+}
+function startApp(){
+  if(started)return;started=true;
+  document.getElementById('csv').hidden=false;
+  if(isAdmin)db.collection('allowed_emails').onSnapshot(function(s){var n={};s.docs.forEach(function(d){n[d.id]=true});allowed=n;draw()},function(){});
+  db.collection('users').onSnapshot(function(s){var n={};s.docs.forEach(function(d){n[d.id]=clone(d.data())});names=n;draw()},function(){});
+  db.collection('roster').onSnapshot(function(s){var n={};s.docs.forEach(function(d){n[d.id]=clone(d.data())});roster=n;if(sel&&!roster[sel])sel=null;if(report&&!roster[report])report=null;draw()},function(e){banner='Cannot read records ('+(e&&e.code)+').';draw()});
+  db.collection('subjects').onSnapshot(function(s){var n={};s.docs.forEach(function(d){n[d.id]=clone(d.data())});subjects=n;syncTeacherSubs();draw()},function(){});
+  db.doc('config/weights').onSnapshot(function(d){if(d.exists)weights=Object.assign({},DEFAULT_W,clone(d.data()));draw()},function(){});
+  db.doc('config/school').onSnapshot(function(d){if(d.exists&&d.data().name)schoolName=String(d.data().name);draw()},function(){});
+  db.doc('config/periods').onSnapshot(function(d){if(d.exists&&Array.isArray(d.data().times)&&d.data().times.length)periodTimes=d.data().times;draw()},function(){});
+  db.doc('config/breaks').onSnapshot(function(d){if(d.exists&&Array.isArray(d.data().list)&&d.data().list.length)breaks=d.data().list;draw()},function(){});
+  db.collection('holidays').onSnapshot(function(s){var n={};s.docs.forEach(function(d){n[d.id]=clone(d.data())});holidays=n;draw()},function(){});
+  db.collection('schedules').onSnapshot(function(s){var n={};s.docs.forEach(function(d){n[d.id]=clone(d.data())});schedules=n;draw()},function(){});
+  db.collection('assignments').onSnapshot(function(s){var n={};s.docs.forEach(function(d){n[d.id]=clone(d.data())});assignments=n;draw()},function(){});
+  db.collection('classes').onSnapshot(function(s){var n={};s.docs.forEach(function(d){n[d.id]=clone(d.data())});classes=n;draw()},function(){});
+  db.collection('announcements').onSnapshot(function(s){var n={};s.docs.forEach(function(d){n[d.id]=clone(d.data())});announcements=n;draw()},function(){});
+  draw();
+}
+function showGate(err){
+  document.getElementById('tabs').innerHTML='';document.getElementById('role').textContent='';document.getElementById('userchip').innerHTML='';
+  document.getElementById('back').hidden=true;document.getElementById('csv').hidden=true;
+  document.getElementById('app').innerHTML='<div class="card gatewrap"><div class="logo" style="margin:0 auto 14px">S</div><h2 style="margin-bottom:6px">'+esc(schoolName)+'</h2><p class="mut" style="margin-top:0">Sign in with your school Google account to continue.</p>'+
+    (err?'<div class="banner" style="text-align:left">'+esc(err)+'</div>':'')+'<button class="p" id="gsign" style="width:100%">Continue with Google</button><div class="mut" style="margin-top:14px;font-size:11px">Build: retry-3</div></div>';
+  var b=document.getElementById('gsign');if(b)b.onclick=function(){
+    auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(function(e){showGate('Sign-in failed: '+(e&&e.message||e))});
+  };
+}
+function showNotAuthorized(msg){
+  document.getElementById('tabs').innerHTML='';document.getElementById('role').textContent='';document.getElementById('userchip').innerHTML='';
+  document.getElementById('back').hidden=true;document.getElementById('csv').hidden=true;
+  document.getElementById('app').innerHTML='<div class="card gatewrap"><h2>No access yet</h2><p class="mut">'+esc(myEmail)+' is signed in, but the administrator has not added this email to the school list.</p>'+
+    (msg?'<div class="banner" style="text-align:left">'+esc(msg)+'</div>':'')+'<button id="so2">Sign out</button><div class="mut" style="margin-top:14px;font-size:11px">Build: retry-3</div></div>';
+  var b=document.getElementById('so2');if(b)b.onclick=function(){auth.signOut()};
+}
+function init(){
+  if(!isConfigured()){
+    document.getElementById('tabs').innerHTML='';
+    document.getElementById('app').innerHTML='<div class="card" style="max-width:480px;margin:60px auto"><h2>Setup needed</h2><p class="mut">This copy is not connected to Firebase yet. Open the HTML file in a text editor, find <code>FIREBASE_CONFIG</code> near the top of the script, and paste in the values from your Firebase project. See SETUP.md for the full walkthrough.</p></div>';
+    return;
+  }
+  try{firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore();db.settings({experimentalForceLongPolling:true,useFetchStreams:false});auth=firebase.auth()}
+  catch(e){document.getElementById('app').innerHTML='<div class="banner">Could not start Firebase: '+esc(e&&e.message||e)+'. Double check FIREBASE_CONFIG.</div>';return}
+  auth.onAuthStateChanged(function(u){
+    started=false;
+    if(!u){myId=null;isAdmin=false;showGate();return}
+    myId=u.uid;myName=u.displayName||u.email||'Signed in';myEmail=(u.email||'').toLowerCase();
+    getWithRetry('allowed_emails/'+myEmail).then(function(ad){
+      if(!ad.exists){showNotAuthorized();return}
+      db.doc('users/'+myId).set({name:myName,email:myEmail,photo:u.photoURL||'',updatedAt:Date.now()},{merge:true}).catch(function(){});
+      db.doc('admins/'+myId).onSnapshot(function(d){isAdmin=!!d.exists;startApp()},function(){isAdmin=false;startApp()});
+    }).catch(function(e){showNotAuthorized('Could not check access: '+(e&&e.message||e))});
+  });
+}
+
+/* ---------- rendering ---------- */
+function render(){draw()}
+function draw(){
+  if(!started)return;
+  document.title=schoolName||'School Records';
+  var app=document.getElementById('app');
+  var fid=document.activeElement&&document.activeElement.id;
+  var keep={};app.querySelectorAll('[data-keep]').forEach(function(e){keep[e.id]=e.type==='checkbox'?e.checked:e.value});
+  var codes=myCodes();
+  document.getElementById('role').textContent=isAdmin?'Owner / admin':(codes.length?'Teacher \u00b7 '+codes.join(', '):'View only');
+  document.getElementById('userchip').innerHTML='<span class="userchip">'+av(myName,24)+'<span>'+esc(myName)+'</span><button id="signout">Sign out</button></span>';
+  var so=document.getElementById('signout');if(so)so.onclick=function(){auth.signOut()};
+  document.querySelector('.logo').textContent=((schoolName||'S').trim()[0]||'S').toUpperCase();
+  var mine=mineOnly==null?(!isAdmin&&codes.length>0):mineOnly;
+  var tabs=document.getElementById('tabs');
+  var TL={students:'Students',classes:'Classes',rollcall:'Roll call',assignments:'Assignments',subjects:'Subjects',teachers:'Teachers',announcements:'Announcements',schedule:'Schedule',timetable:'Timetable'};if(isAdmin)TL.access='Access';
+  tabs.innerHTML=Object.keys(TL).map(function(t){return '<button data-tab="'+t+'" class="'+(tab===t?'on':'')+'">'+TL[t]+'</button>'}).join('');
+  var back=document.getElementById('back'),title=document.getElementById('title');
+  var h=banner?'<div class="banner">'+esc(banner)+'</div>':'';
+  if(tab==='students'&&report&&roster[report]){back.hidden=false;title.textContent=roster[report].name||'Report';h+=reportView(report)}
+  else if(tab==='students'&&sel&&roster[sel]){back.hidden=false;title.textContent=roster[sel].name||'Student';h+=studentView(sel)}
+  else{back.hidden=true;title.textContent=schoolName;
+    h+=tab==='subjects'?subjectsView():tab==='rollcall'?rollView():tab==='assignments'?assignmentsView():tab==='classes'?classesView():tab==='teachers'?teachersView():tab==='announcements'?announcementsView():tab==='schedule'?scheduleView():tab==='timetable'?teachersTimetableView():(tab==='access'&&isAdmin)?accessView():classView(mine)}
+  app.innerHTML=h;
+  Object.keys(keep).forEach(function(id){var e=document.getElementById(id);if(!e)return;if(e.type==='checkbox')e.checked=keep[id];else e.value=keep[id]});
+  if(fid==='search'||fid==='tq'){var el=document.getElementById(fid);if(el){el.focus();try{el.setSelectionRange(el.value.length,el.value.length)}catch(e){}}}
+}
+function classView(mine){
+  var mc=myCodes();
+  var ids=Object.keys(roster).filter(function(id){
+    if((roster[id].name||'').toLowerCase().indexOf(filter.toLowerCase())<0)return false;
+    if(mine)return enrolled(id).some(function(c){return mc.indexOf(c)>-1});return true;
+  }).sort(function(a,b){return (roster[a].name||'').localeCompare(roster[b].name||'')});
+  var all=Object.keys(roster),avgs=all.map(overall).filter(function(x){return x!=null});
+  var h='<div class="stats"><div class="stat"><span class="mut">Students</span><b>'+all.length+'</b></div><div class="stat"><span class="mut">Class average</span><b class="'+cls(mean(avgs))+'">'+fmt(mean(avgs))+'</b></div><div class="stat"><span class="mut">Absences</span><b>'+all.reduce(function(n,i){return n+absTotal(i)},0)+'</b></div></div>';
+  if(isAdmin)h+='<div class="card"><h2>Add student</h2><div class="row"><input id="newName" data-keep placeholder="Full name"><input id="newLevel" data-keep placeholder="Class (e.g. 9B)" style="max-width:150px"><button class="p" data-act="addStudent">Add</button></div></div>';
+  h+='<div class="card"><div class="row" style="margin-bottom:8px"><h2 style="margin:0;flex:1">Students</h2>'+(mc.length?'<label class="mut"><input type="checkbox" id="mineOnly" style="width:auto"'+(mine?' checked':'')+'> my students</label>':'')+'<input id="search" placeholder="Search name" value="'+esc(filter)+'" style="max-width:170px"></div><div class="scroll"><table><tr><th>Name</th><th>Class</th><th>Subjects</th><th>Absences</th><th>Average</th><th></th></tr>';
+  ids.forEach(function(id){var s=roster[id],a=overall(id);
+    h+='<tr class="click" data-act="open" data-id="'+esc(id)+'"><td><div class="who">'+av(s.name)+esc(s.name)+'</div></td><td>'+esc(s.level)+'</td><td>'+enrolled(id).map(function(c){return '<span class="code">'+esc(c)+'</span>'}).join(' ')+'</td><td>'+absTotal(id)+'</td><td style="min-width:90px">'+pill(a)+bar(a)+'</td><td><button data-act="report" data-id="'+esc(id)+'">Report</button></td></tr>'});
+  if(!ids.length)h+='<tr><td colspan="6" class="mut">No students to show.</td></tr>';
+  h+='</table></div></div>';
+  if(isAdmin){h+='<div class="card"><h2>School name</h2><input data-sn="1" value="'+esc(schoolName)+'" style="width:100%"><p class="mut" style="margin-bottom:0">Shown in the header and on student reports.</p></div>';h+='<div class="card"><h2>Grade weighting</h2><p class="mut" style="margin-top:0">Each category is averaged, then combined with these weights. Equal numbers give a plain average.</p><div class="row">';
+    TYPES.forEach(function(t){h+='<label class="mut">'+t+' %<br><input type="number" min="0" max="100" data-w="'+t+'" value="'+esc(weights[t])+'" style="width:80px"></label>'});h+='</div></div>'}
+  return h;
+}
+function subjectsView(){
+  var codes=Object.keys(subjects).sort();
+  var h='';
+  if(isAdmin){
+    h+='<div class="card"><h2>Add subject code</h2><div class="row"><input id="sCode" data-keep placeholder="Code (e.g. MATH101)" maxlength="12" style="max-width:150px"><input id="sName" data-keep placeholder="Subject name"></div><div class="row" style="margin-top:8px"><button data-act="pickNew">'+(newTeacher?'Teacher: '+esc(tname(newTeacher))+' (change)':'Choose teacher')+'</button><button class="p" data-act="addSubject">Create</button></div></div>';
+    if(assignFor!==null)h+='<div class="card"><h2>Pick a teacher'+(assignFor==='new'?'':' for '+esc(assignFor))+'</h2><p class="mut" style="margin-top:0">Only people who have signed in at least once appear here. Ask them to open the site and sign in first.</p><input id="tq" placeholder="Search name" style="width:100%"><div id="tres"></div><div class="row" style="margin-top:8px"><button data-act="cancelPick">Cancel</button></div></div>';
+  }
+  h+='<div class="card"><h2>Subjects</h2><div class="scroll"><table><tr><th>Code</th><th>Name</th><th>Teacher</th><th>Students</th><th>Average</th><th></th></tr>';
+  codes.forEach(function(c){var s=subjects[c],st=Object.keys(roster).filter(function(id){return enrolled(id).indexOf(c)>-1});
+    var avg=mean(st.map(function(id){return subjectAvg(id,c)}).filter(function(x){return x!=null}));
+    h+='<tr><td><span class="code">'+esc(c)+'</span></td><td>'+esc(s.name)+'</td><td>'+esc(tname(s.teacherId))+(s.teacherId&&s.teacherId===myId?' <span class="mut">(you)</span>':'')+'</td><td>'+st.length+'</td><td>'+pill(avg)+'</td><td>'+(isAdmin?'<button data-act="assign" data-code="'+esc(c)+'">Teacher</button> <button class="x" data-act="delSubject" data-code="'+esc(c)+'">&times;</button>':'')+'</td></tr>'});
+  if(!codes.length)h+='<tr><td colspan="6" class="mut">No subjects yet.'+(isAdmin?'':' The owner creates them.')+'</td></tr>';
+  h+='</table></div></div>';
+  return h;
+}
+function studentView(sid){
+  var s=roster[sid],a=overall(sid),en=enrolled(sid);
+  var sAge=ageFrom(s.dob);var h='<div class="card hero" style="margin-bottom:14px">'+av(s.name,56)+'<div><b>'+esc(s.name)+'</b><span class="mut">Class '+esc(s.level||'\u2013')+' \u00b7 '+en.length+' subject'+(en.length===1?'':'s')+(sAge!=null?' \u00b7 age '+sAge:'')+(s.career?' \u00b7 wants to be '+esc(s.career):'')+(s.email?' \u00b7 <a href="mailto:'+esc(s.email)+'">'+esc(s.email)+'</a>':'')+'</span></div><button class="p noprint" style="margin-left:auto" data-act="report" data-id="'+sid+'">Report</button></div><div class="stats"><div class="stat"><span class="mut">Overall average</span><b class="'+cls(a)+'">'+fmt(a)+'</b>'+bar(a)+'</div><div class="stat"><span class="mut">Absences</span><b>'+absTotal(sid)+'</b><span class="mut">'+absTotal(sid,true)+' unexcused</span></div></div>';
+  if(isAdmin){
+    h+='<div class="card"><h2>Details</h2><div class="row"><input data-f="name" value="'+esc(s.name)+'" placeholder="Name">'+(function(){var co=Object.keys(classes);if(s.level&&co.indexOf(s.level)<0)co.push(s.level);co.sort();return '<select data-f="level" style="max-width:150px"><option value=""'+(!s.level?' selected':'')+'>No class</option>'+co.map(function(c){return '<option value="'+esc(c)+'"'+(c===s.level?' selected':'')+'>'+esc(c)+'</option>'}).join('')+'</select>'})()+'<input data-f="dob" type="date" value="'+esc(s.dob)+'" placeholder="Date of birth" style="max-width:150px"><button class="x" data-act="delStudent">Delete</button></div>'+
+      '<div class="row" style="margin-top:8px"><input data-f="career" value="'+esc(s.career)+'" placeholder="Career goal / aspiration"><input data-f="email" type="email" value="'+esc(s.email)+'" placeholder="Contact email"></div>'+
+      '<p class="mut" style="margin:12px 0 6px">Subjects taken</p>'+enrollBlock(sid,en)+'</div>';
+  }else h+='<div class="card"><div class="mut">Class '+esc(s.level||'\u2013')+(s.email?' \u00b7 <a href="mailto:'+esc(s.email)+'">'+esc(s.email)+'</a>':'')+'</div></div>';
+  h+=miniSchedule(s.level);
+  if(!en.length)h+='<div class="card"><p class="mut">No subjects assigned to this student yet.</p></div>';
+  en.forEach(function(code){h+=subjectBlock(sid,code)});
+  return h;
+}
+function enrollBlock(sid,en){
+  var avail=Object.keys(subjects).filter(function(c){return en.indexOf(c)<0}).sort();
+  var h=(en.length?en.map(function(c){return '<span class="pill">'+esc(c)+' <button data-act="unenr" data-code="'+esc(c)+'">&times;</button></span>'}).join(''):'<span class="mut">None yet.</span>')+'<div style="margin-top:8px">';
+  if(avail.length)h+='<div class="row"><select id="enrPick">'+avail.map(function(c){return '<option value="'+esc(c)+'">'+esc(c)+' \u00b7 '+esc(subjects[c].name)+'</option>'}).join('')+'</select><button class="p" data-act="enr">Add subject</button></div>';
+  else h+='<span class="mut">All subject codes already assigned.</span>';
+  return h+'</div>';
+}
+var SCHED_DAYS=[['MO','Mon'],['TU','Tue'],['WE','Wed'],['TH','Thu'],['FR','Fri']];
+/* Periods and breaks are stored completely separately (so adding/editing a
+   break can never shift a period's grid key); this merges them into one
+   time-ordered list purely for display. */
+function scheduleRows(){
+  var rows=periodTimes.map(function(t,pi){return {kind:'period',time:t,pi:pi}});
+  breaks.forEach(function(b){rows.push({kind:'break',time:b.start,b:b})});
+  rows.sort(function(a,b){return (a.time||'').localeCompare(b.time||'')});
+  return rows;
+}
+function breakRow(b){return '<tr class="brk"><td class="mut">'+esc(b.start)+'\u2013'+esc(b.end)+'</td><td colspan="5" style="text-align:center">'+esc(b.label)+'</td></tr>'}
+function miniSchedule(level){
+  if(!level||!schedules[level])return '';
+  var grid=schedules[level].grid||{};
+  var h='<div class="card"><h2>Weekly schedule \u2014 '+esc(level)+'</h2><div class="scroll"><table class="sched"><tr><th>Time</th>'+SCHED_DAYS.map(function(d){return '<th>'+d[1]+'</th>'}).join('')+'</tr>';
+  scheduleRows().forEach(function(row){
+    if(row.kind==='break'){h+=breakRow(row.b);return}
+    h+='<tr><td class="mut">'+esc(row.time)+'</td>'+SCHED_DAYS.map(function(d){var code=grid[d[0]+'-'+row.pi];return '<td>'+(code?'<span class="code">'+esc(code)+'</span>':'<span class="mut">\u2013</span>')+'</td>'}).join('')+'</tr>';
+  });
+  return h+'</table></div></div>';
+}
+function breaksPanel(){
+  if(!isAdmin)return '';
+  var h='<div class="card"><h2>Breaks</h2><p class="mut" style="margin-top:0">Shown as a row across every class\u2019s table, between whichever periods their times fall.</p>';
+  breaks.forEach(function(b,i){
+    h+='<div class="row" style="margin-bottom:8px"><input data-brk="'+i+'" data-k="label" value="'+esc(b.label)+'" placeholder="Label" style="flex:1"><input data-brk="'+i+'" data-k="start" type="time" value="'+esc(b.start)+'" style="max-width:110px"><input data-brk="'+i+'" data-k="end" type="time" value="'+esc(b.end)+'" style="max-width:110px"><button class="x" data-act="delBreak" data-i="'+i+'">&times;</button></div>';
+  });
+  if(!breaks.length)h+='<p class="mut">No breaks added.</p>';
+  h+='<button data-act="addBreak">Add break</button></div>';
+  return h;
+}
+function holidaysPanel(){
+  var ids=Object.keys(holidays).sort(function(a,b){return (holidays[a].date||'')<(holidays[b].date||'')?-1:1});
+  var h='<div class="card"><h2>Holidays &amp; events</h2>';
+  if(isAdmin)h+='<div class="row" style="margin-bottom:10px"><input id="hDate" data-keep type="date" style="flex:0 0 auto"><input id="hTitle" data-keep placeholder="Title"><select id="hType" data-keep><option value="holiday">Holiday</option><option value="event">Event</option></select><button class="p" data-act="addHoliday">Add</button></div>';
+  h+='<div class="scroll"><table><tr><th>Date</th><th>Title</th><th>Type</th>'+(isAdmin?'<th></th>':'')+'</tr>';
+  ids.forEach(function(id){var x=holidays[id];h+='<tr><td>'+esc(x.date)+'</td><td>'+esc(x.title)+'</td><td><span class="chip '+(x.type==='holiday'?'g-ok':'g-mid')+'">'+esc(x.type)+'</span></td>'+(isAdmin?'<td><button class="x" data-act="delHoliday" data-id="'+esc(id)+'">&times;</button></td>':'')+'</tr>'});
+  if(!ids.length)h+='<tr><td colspan="4" class="mut">None added yet.</td></tr>';
+  h+='</table></div></div>';
+  return h;
+}
+function scheduleView(){
+  var levels=Object.keys(classes).sort();
+  if(!schLevel||(levels.indexOf(schLevel)<0&&!schedules[schLevel]))schLevel=levels[0]||'';
+  var grid=(schedules[schLevel]&&schedules[schLevel].grid)||{};
+  var h='<div class="card"><h2>Schedule</h2>'+(levels.length?'<div class="row"><select id="schLevel">'+levels.map(function(l){return '<option'+(l===schLevel?' selected':'')+'>'+esc(l)+'</option>'}).join('')+'</select></div>':'<p class="mut" style="margin:0">Create a class on the Classes tab first.</p>');
+  if(isAdmin)h+='<p class="mut" style="margin:12px 0 4px">Period start times (comma separated)</p><div class="row"><input id="periodTimes" data-keep value="'+esc(periodTimes.join(', '))+'" style="flex:1"><button data-act="saveTimes">Save</button></div>';
+  h+='</div>';
+  if(schLevel){
+    h+='<div class="card"><div class="scroll"><table class="sched"><tr><th>Time</th>'+SCHED_DAYS.map(function(d){return '<th>'+d[1]+'</th>'}).join('')+'</tr>';
+    scheduleRows().forEach(function(row){
+      if(row.kind==='break'){h+=breakRow(row.b);return}
+      h+='<tr><td class="mut">'+esc(row.time)+'</td>'+SCHED_DAYS.map(function(d){
+        var key=d[0]+'-'+row.pi,code=grid[key]||'';
+        if(isAdmin)return '<td><select data-sch="'+key+'"><option value="">\u2014</option>'+Object.keys(subjects).sort().map(function(c){return '<option value="'+esc(c)+'"'+(c===code?' selected':'')+'>'+esc(c)+'</option>'}).join('')+'</select></td>';
+        return '<td>'+(code?'<span class="code">'+esc(code)+'</span><div class="mut" style="font-size:11px">'+esc((subjects[code]||{}).name||'')+'</div>':'<span class="mut">\u2014</span>')+'</td>';
+      }).join('')+'</tr>';
+    });
+    h+='</table></div></div>';
+  }
+  h+=breaksPanel()+holidaysPanel();
+  return h;
+}
+function myTimetableFor(teacherId){
+  var grid={};
+  Object.keys(schedules).forEach(function(level){
+    var g=(schedules[level]&&schedules[level].grid)||{};
+    Object.keys(g).forEach(function(key){
+      var code=g[key];if(!code)return;
+      var sub=subjects[code];if(!sub||sub.teacherId!==teacherId)return;
+      grid[key]={level:level,code:code};
+    });
+  });
+  return grid;
+}
+function teachersTimetableView(){
+  var all=Object.keys(names).sort(function(a,b){return tname(a).localeCompare(tname(b))});
+  if(!ttTeacher||all.indexOf(ttTeacher)<0)ttTeacher=(isAdmin?all[0]:myId)||'';
+  var h='<div class="card"><h2>Personal timetable</h2>';
+  if(isAdmin&&all.length)h+='<div class="row"><select id="ttTeacher">'+all.map(function(id){return '<option value="'+esc(id)+'"'+(id===ttTeacher?' selected':'')+'>'+esc(tname(id))+(id===myId?' (you)':'')+'</option>'}).join('')+'</select></div>';
+  else h+='<p class="mut" style="margin-top:0">Your own lessons, across every class you teach.</p>';
+  h+='</div>';
+  if(!ttTeacher)return h;
+  var fc=Object.keys(classes).filter(function(lv){return classes[lv].formTeacherId===ttTeacher});
+  if(fc.length)h+='<div class="card"><p class="mut" style="margin:0">Form teacher of: '+esc(fc.join(', '))+'</p></div>';
+  var tgrid=myTimetableFor(ttTeacher);
+  h+='<div class="card"><div class="scroll"><table class="sched"><tr><th>Time</th>'+SCHED_DAYS.map(function(d){return '<th>'+d[1]+'</th>'}).join('')+'</tr>';
+  scheduleRows().forEach(function(row){
+    if(row.kind==='break'){h+=breakRow(row.b);return}
+    h+='<tr><td class="mut">'+esc(row.time)+'</td>'+SCHED_DAYS.map(function(d){var hit=tgrid[d[0]+'-'+row.pi];return '<td>'+(hit?'<span class="code">'+esc(hit.code)+'</span><div class="mut" style="font-size:11px">'+esc(hit.level)+'</div>':'<span class="mut">\u2013</span>')+'</td>'}).join('')+'</tr>';
+  });
+  h+='</table></div></div>';
+  return h;
+}
+function subjectBlock(sid,code){
+  var sub=subjects[code],e=validEntry(sid,code),ed=canEditSub(code),avv=subjectAvg(sid,code);
+  var h='<div class="card"><h2><span class="code">'+esc(code)+'</span> '+esc(sub.name)+' <span style="float:right">'+pill(avv)+'</span></h2><p class="lock">'+(sub.teacherId?'Teacher: '+esc(tname(sub.teacherId)):'No teacher assigned')+' \u00b7 '+(ed?'you can edit':'read only')+'</p>';
+  h+=(ed?'<input data-cm="1" data-code="'+esc(code)+'" value="'+esc(e.comment)+'" placeholder="Teacher comment (shown on the report)" style="width:100%;margin-bottom:10px">':(e.comment?'<p class="mut" style="margin-top:0">\u201c'+esc(e.comment)+'\u201d</p>':''));
+  if(ed){
+    h+='<div class="row" style="margin-bottom:8px"><select id="gt-'+esc(code)+'" data-keep>'+TYPES.map(function(t){return '<option>'+t+'</option>'}).join('')+'</select><input id="gn-'+esc(code)+'" data-keep placeholder="Title"><input id="gs-'+esc(code)+'" data-keep type="number" step="any" placeholder="Score" style="max-width:80px"><input id="gm-'+esc(code)+'" data-keep type="number" step="any" placeholder="Out of" value="100" style="max-width:80px"><button class="p" data-act="addGrade" data-code="'+esc(code)+'">Add</button></div>';
+  }
+  h+='<div class="scroll"><table><tr><th>Type</th><th>Title</th><th>Score</th><th>Out of</th><th>%</th><th></th></tr>';
+  (e.grades||[]).forEach(function(g,i){var p=+g.max>0&&g.score!==''?+g.score/+g.max*100:null;
+    h+='<tr><td>'+esc(g.type)+'</td>'+(ed?'<td><input data-g="'+i+'" data-code="'+esc(code)+'" data-k="title" value="'+esc(g.title)+'"></td><td><input class="n" type="number" step="any" data-g="'+i+'" data-code="'+esc(code)+'" data-k="score" value="'+esc(g.score)+'"></td><td><input class="n" type="number" step="any" data-g="'+i+'" data-code="'+esc(code)+'" data-k="max" value="'+esc(g.max)+'"></td>':'<td>'+esc(g.title)+'</td><td>'+esc(g.score)+'</td><td>'+esc(g.max)+'</td>')+'<td>'+pill(p)+'</td><td>'+(ed?'<button class="x" data-act="delGrade" data-code="'+esc(code)+'" data-i="'+i+'">&times;</button>':'')+'</td></tr>'});
+  if(!(e.grades||[]).length)h+='<tr><td colspan="6" class="mut">No grades recorded.</td></tr>';
+  h+='</table></div><h2 style="margin-top:14px">Absences</h2>';
+  if(ed)h+='<div class="row" style="margin-bottom:8px"><input id="ad-'+esc(code)+'" data-keep type="date" value="'+today()+'" style="flex:0 0 auto"><input id="an-'+esc(code)+'" data-keep placeholder="Note"><label class="mut"><input id="ae-'+esc(code)+'" data-keep type="checkbox" style="width:auto"> excused</label><button class="p" data-act="addAbsence" data-code="'+esc(code)+'">Add</button></div>';
+  h+='<div class="scroll"><table><tr><th>Date</th><th>Note</th><th>Excused</th><th></th></tr>';
+  (e.absences||[]).map(function(x,i){return {x:x,i:i}}).sort(function(p,q){return q.x.date<p.x.date?-1:1}).forEach(function(o){
+    h+='<tr><td>'+esc(o.x.date)+'</td><td>'+esc(o.x.note)+'</td><td>'+(ed?'<input type="checkbox" style="width:auto" data-ex="'+o.i+'" data-code="'+esc(code)+'"'+(o.x.excused?' checked':'')+'>':(o.x.excused?'yes':'no'))+'</td><td>'+(ed?'<button class="x" data-act="delAbsence" data-code="'+esc(code)+'" data-i="'+o.i+'">&times;</button>':'')+'</td></tr>'});
+  if(!(e.absences||[]).length)h+='<tr><td colspan="4" class="mut">No absences recorded.</td></tr>';
+  return h+'</table></div></div>';
+}
+
+/* ---------- roll call ---------- */
+function byName(a,b){return (roster[a].name||'').localeCompare(roster[b].name||'')}
+function rollView(){
+  var codes=Object.keys(subjects).filter(canEditSub).sort();
+  if(!codes.length)return '<div class="card"><p class="mut" style="margin:0">'+(isAdmin?'Create a subject code and assign a teacher first.':'You have no subject codes yet. Ask the owner to assign one.')+'</p></div>';
+  if(!rcCode||codes.indexOf(rcCode)<0)rcCode=codes[0];
+  var ids=Object.keys(roster).filter(function(id){return enrolled(id).indexOf(rcCode)>-1}).sort(byName);
+  var cnt={present:0,absent:0,excused:0},rows='';
+  ids.forEach(function(id){
+    var e=validEntry(id,rcCode)||{absences:[]},rec=(e.absences||[]).filter(function(a){return a.date===rcDate})[0];
+    var st=!rec?'present':(rec.excused?'excused':'absent');cnt[st]++;
+    rows+='<div class="rc-row"><div class="who">'+av(roster[id].name)+'<span>'+esc(roster[id].name)+'</span></div><div class="seg">'+
+      ['present','absent','excused'].map(function(s){return '<button data-act="rc" data-sid="'+esc(id)+'" data-code="'+esc(rcCode)+'" data-state="'+s+'" class="'+(st===s?'on-'+s:'')+'">'+s.charAt(0).toUpperCase()+s.slice(1)+'</button>'}).join('')+'</div></div>';
+  });
+  var h='<div class="card"><h2>Roll call</h2><div class="row"><select id="rcSub">'+codes.map(function(c){return '<option value="'+esc(c)+'"'+(c===rcCode?' selected':'')+'>'+esc(c)+' \u00b7 '+esc(subjects[c].name)+'</option>'}).join('')+'</select><input type="date" id="rcDate" value="'+esc(rcDate)+'" style="flex:0 0 auto"><button data-act="rcAll" data-code="'+esc(rcCode)+'">All present</button></div>'+
+    '<div class="row" style="margin-top:12px"><span class="chip g-ok">'+cnt.present+' present</span><span class="chip g-bad">'+cnt.absent+' absent</span><span class="chip g-mid">'+cnt.excused+' excused</span></div><p class="mut" style="margin-bottom:0">Everyone counts as present unless marked. Each tap saves straight away.</p></div>';
+  h+='<div class="card">'+(rows||'<p class="mut" style="margin:0">No students are enrolled in this subject yet.</p>')+'</div>';
+  return h;
+}
+
+/* ---------- access (admin: who may sign in) ---------- */
+function accessView(){
+  var emails=Object.keys(allowed).sort();
+  var h='<div class="card"><h2>Allowed teachers</h2><p class="mut" style="margin-top:0">Only these Google email addresses can sign in and see student data. Everyone else who tries gets a "no access yet" screen.</p><div class="row"><input id="newEmail" data-keep placeholder="name@school.example" style="flex:1"><button class="p" data-act="addAllowed">Add</button></div></div>';
+  h+='<div class="card"><div class="scroll"><table><tr><th>Email</th><th>Name</th><th></th></tr>';
+  emails.forEach(function(em){var nm=Object.keys(names).filter(function(id){return (names[id].email||'').toLowerCase()===em})[0],mine=em===myEmail;
+    h+='<tr><td>'+esc(em)+'</td><td>'+(nm?esc(names[nm].name):'<span class="mut">Not signed in yet</span>')+'</td><td>'+(mine?'<span class="mut">you</span>':'<button class="x" data-act="delAllowed" data-email="'+esc(em)+'">&times;</button>')+'</td></tr>'});
+  if(!emails.length)h+='<tr><td colspan="3" class="mut">No one is on the list yet.</td></tr>';
+  h+='</table></div></div>';
+  return h;
+}
+
+function byName2(a,b){return (roster[a].name||'').localeCompare(roster[b].name||'')}
+function assignmentsView(){
+  var mc=isAdmin?Object.keys(subjects).sort():myCodes();
+  if(!mc.length)return '<div class="card"><p class="mut" style="margin:0">'+(isAdmin?'Create a subject code first.':'You have no subject codes yet. Ask the owner to assign one.')+'</p></div>';
+  if(!asgCode||mc.indexOf(asgCode)<0)asgCode=mc[0];
+  var list=Object.keys(assignments).filter(function(id){return assignments[id].code===asgCode}).sort(function(x,y){return (assignments[y].dueDate||'')<(assignments[x].dueDate||'')?-1:1});
+  var h='<div class="card"><h2>Assignments</h2><div class="row"><select id="asgCode">'+mc.map(function(c){return '<option value="'+esc(c)+'"'+(c===asgCode?' selected':'')+'>'+esc(c)+' \u00b7 '+esc(subjects[c].name)+'</option>'}).join('')+'</select></div></div>';
+  if(canEditSub(asgCode))h+='<div class="card"><h2>New assignment</h2><div class="row"><select id="aType" data-keep>'+TYPES.map(function(t){return '<option'+(t==='assignment'?' selected':'')+'>'+t+'</option>'}).join('')+'</select><input id="aTitle" data-keep placeholder="Title"><input id="aDue" data-keep type="date" style="flex:0 0 auto"><input id="aPts" data-keep type="number" placeholder="Points" value="100" style="max-width:90px"></div><div class="row" style="margin-top:8px"><input id="aLink" data-keep placeholder="Resource link (optional)" style="flex:1"><button class="p" data-act="addAssignment">Create</button></div><p class="mut" style="margin-bottom:0">No student accounts are involved \u2014 use this to plan work and record what each student handed in and scored.</p></div>';
+  h+='<div class="card">';
+  if(!list.length)h+='<p class="mut" style="margin:0">No assignments yet for '+esc(asgCode)+'.</p>';
+  var roster_ids=Object.keys(roster).filter(function(sid){return enrolled(sid).indexOf(asgCode)>-1});
+  list.forEach(function(id){var a=assignments[id],done=roster_ids.filter(function(sid){var g=assignmentGrade(sid,asgCode,id);return g&&g.status==='submitted'}).length;
+    h+='<div class="rc-row click" data-act="openAssignment" data-id="'+esc(id)+'"><div><b>'+esc(a.title)+'</b><div class="mut">'+esc(a.type)+' \u00b7 due '+esc(a.dueDate||'\u2013')+' \u00b7 '+esc(a.points)+' pts \u00b7 '+done+'/'+roster_ids.length+' submitted</div></div>'+(canEditSub(a.code)?'<button class="x" data-act="delAssignment" data-id="'+esc(id)+'">&times;</button>':'')+'</div>';
+  });
+  h+='</div>';
+  if(asgOpen&&assignments[asgOpen]&&assignments[asgOpen].code===asgCode)h+=assignmentDetail(asgOpen);
+  return h;
+}
+function assignmentDetail(id){
+  var a=assignments[id],ed=canEditSub(a.code),students=Object.keys(roster).filter(function(sid){return enrolled(sid).indexOf(a.code)>-1}).sort(byName2);
+  var h='<div class="card"><h2>'+esc(a.title)+'</h2><p class="mut" style="margin-top:0">'+esc(a.instructions||'No instructions added.')+(a.link?' \u00b7 <a href="'+esc(a.link)+'" target="_blank" rel="noopener">Resource link</a>':'')+'</p>';
+  if(!students.length)h+='<p class="mut">No students take '+esc(a.code)+' yet.</p>';
+  students.forEach(function(sid){var g=assignmentGrade(sid,a.code,id),status=g?g.status:'missing',score=g?g.score:'';
+    h+='<div class="rc-row"><div class="who">'+av(roster[sid].name)+'<span>'+esc(roster[sid].name)+'</span></div><div class="row" style="gap:6px">'+
+      (ed?('<div class="seg">'+['missing','submitted','late'].map(function(s){var on=s==='submitted'?'on-present':s==='late'?'on-excused':'on-absent';return '<button data-act="asgStatus" data-sid="'+esc(sid)+'" data-aid="'+esc(id)+'" data-state="'+s+'" class="'+(status===s?on:'')+'">'+s.charAt(0).toUpperCase()+s.slice(1)+'</button>'}).join('')+'</div><input class="n" type="number" step="any" placeholder="Score" value="'+esc(score)+'" data-asgscore="'+esc(sid)+'" data-aid="'+esc(id)+'" style="max-width:80px"><span class="mut">/ '+esc(a.points)+'</span>')
+        :('<span class="chip '+(status==='submitted'?'g-ok':status==='late'?'g-mid':'g-bad')+'">'+status+'</span>'+(score!==''?'<span class="mut">'+esc(score)+' / '+esc(a.points)+'</span>':'')))+
+      '</div></div>';
+  });
+  return h+'</div>';
+}
+
+/* ---------- classes (form teachers) ---------- */
+function classesView(){
+  var levels=Object.keys(classes).sort();
+  var h='';
+  if(isAdmin)h+='<div class="card"><h2>Create class</h2><div class="row"><input id="clsName" data-keep placeholder="Class name (e.g. 9B)" style="max-width:200px"></div><div class="row" style="margin-top:8px"><button data-act="pickClsTeacher">'+(newClsTeacher?'Form teacher: '+esc(tname(newClsTeacher))+' (change)':'Choose form teacher (optional)')+'</button><button class="p" data-act="addClass">Create</button></div></div>';
+  if(clsAssignFor!==null)h+='<div class="card"><h2>Pick a form teacher'+(clsAssignFor==='new'?'':' for '+esc(clsAssignFor))+'</h2><p class="mut" style="margin-top:0">Only people who have signed in at least once appear here.</p><input id="cq" placeholder="Search name" style="width:100%"><div id="cres"></div><div class="row" style="margin-top:8px"><button data-act="cancelClsPick">Cancel</button></div></div>';
+  h+='<div class="card"><h2>Classes</h2><div class="scroll"><table><tr><th>Class</th><th>Form teacher</th><th>Students</th><th></th></tr>';
+  levels.forEach(function(lv){var cnt=Object.keys(roster).filter(function(id){return roster[id].level===lv}).length;
+    h+='<tr class="click" data-act="openClass" data-level="'+esc(lv)+'"><td><b>'+esc(lv)+'</b></td><td>'+esc(tname(classes[lv].formTeacherId))+(classes[lv].formTeacherId===myId?' <span class="mut">(you)</span>':'')+'</td><td>'+cnt+'</td><td>'+(isAdmin?'<button data-act="clsTeacherBtn" data-level="'+esc(lv)+'">Form teacher</button> <button class="x" data-act="delClass" data-level="'+esc(lv)+'">&times;</button>':'')+'</td></tr>'});
+  if(!levels.length)h+='<tr><td colspan="4" class="mut">No classes yet.'+(isAdmin?'':' Ask the owner to create one.')+'</td></tr>';
+  h+='</table></div></div>';
+  if(clsOpen&&classes[clsOpen])h+=classDetail(clsOpen);
+  return h;
+}
+function classDetail(level){
+  var ed=canEditClass(level),members=Object.keys(roster).filter(function(id){return roster[id].level===level}).sort(byName2);
+  var h='<div class="card"><h2>'+esc(level)+'</h2><p class="mut" style="margin-top:0">Form teacher: '+esc(tname(classes[level].formTeacherId))+' \u00b7 '+(ed?'you can edit this list':'read only')+'</p>';
+  if(ed){
+    var avail=Object.keys(roster).filter(function(id){return roster[id].level!==level}).sort(byName2);
+    h+='<div class="row" style="margin-bottom:10px">'+(avail.length?'<select id="clsPick">'+avail.map(function(id){return '<option value="'+esc(id)+'">'+esc(roster[id].name)+(roster[id].level?' ('+esc(roster[id].level)+')':'')+'</option>'}).join('')+'</select><button class="p" data-act="clsAdd" data-level="'+esc(level)+'">Add to class</button>':'<span class="mut">Every student is already in this class.</span>')+'</div>';
+  }
+  h+='<div class="scroll"><table><tr><th>Name</th><th>Average</th><th></th></tr>';
+  members.forEach(function(id){var a=overall(id);h+='<tr><td>'+esc(roster[id].name)+'</td><td>'+pill(a)+'</td><td>'+(ed?'<button class="x" data-act="clsRemove" data-id="'+esc(id)+'">&times;</button>':'')+'</td></tr>'});
+  if(!members.length)h+='<tr><td colspan="3" class="mut">No students in this class yet.</td></tr>';
+  return h+'</table></div></div>';
+}
+function runSearchCls(q){
+  var box=document.getElementById('cres');if(!box)return;
+  box.textContent='';
+  var hits=Object.keys(names).filter(function(id){return !q||(names[id].name||'').toLowerCase().indexOf(q.toLowerCase())>-1}).sort(function(a,b){return (names[a].name||'').localeCompare(names[b].name||'')});
+  if(!hits.length){var p=document.createElement('p');p.className='mut';p.textContent=q?'No matches.':'No one has signed in yet.';box.appendChild(p);return}
+  hits.forEach(function(id){var b=document.createElement('button');b.dataset.act='pickClsTeacherResult';b.dataset.pid=id;b.textContent=names[id].name||names[id].email||id;box.appendChild(b)});
+}
+function openClsPicker(){var q=document.getElementById('cq');if(q){q.focus();runSearchCls('')}}
+
+/* ---------- teachers directory (read-only) ---------- */
+function teachersView(){
+  var people={};
+  Object.keys(names).forEach(function(id){people[id]={subjects:[],classes:[]}});
+  Object.keys(subjects).forEach(function(c){var t=subjects[c].teacherId;if(t){people[t]=people[t]||{subjects:[],classes:[]};people[t].subjects.push(c)}});
+  Object.keys(classes).forEach(function(lv){var t=classes[lv].formTeacherId;if(t){people[t]=people[t]||{subjects:[],classes:[]};people[t].classes.push(lv)}});
+  var ids=Object.keys(people).sort(function(a,b){return tname(a).localeCompare(tname(b))});
+  var h='<div class="card"><h2>Teachers</h2><div class="scroll"><table><tr><th>Name</th><th>Subjects</th><th>Form class</th></tr>';
+  ids.forEach(function(id){var p=people[id];
+    h+='<tr><td><div class="who">'+av(tname(id))+esc(tname(id))+(id===myId?' <span class="mut">(you)</span>':'')+'</div></td><td>'+(p.subjects.length?p.subjects.sort().map(function(c){return '<span class="code">'+esc(c)+'</span>'}).join(' '):'<span class="mut">none</span>')+'</td><td>'+(p.classes.length?esc(p.classes.sort().join(', ')):'<span class="mut">none</span>')+'</td></tr>'});
+  if(!ids.length)h+='<tr><td colspan="3" class="mut">No one has signed in yet.</td></tr>';
+  h+='</table></div></div>';
+  return h;
+}
+
+/* ---------- announcements (admin posts, everyone reads) ---------- */
+function announcementsView(){
+  var ids=Object.keys(announcements).sort(function(a,b){return (announcements[b].createdAt||0)-(announcements[a].createdAt||0)});
+  var h='';
+  if(isAdmin)h+='<div class="card"><h2>Post an announcement</h2><div class="row"><input id="anTitle" data-keep placeholder="Title"></div><div class="row" style="margin-top:8px"><textarea id="anBody" data-keep placeholder="Message"></textarea></div><div class="row" style="margin-top:8px"><button class="p" data-act="addAnnouncement">Post</button></div></div>';
+  h+='<div class="card">';
+  if(!ids.length)h+='<p class="mut" style="margin:0">No announcements yet.</p>';
+  ids.forEach(function(id){var a=announcements[id];
+    h+='<div class="rc-row" style="align-items:flex-start"><div style="flex:1"><b>'+esc(a.title)+'</b><div class="mut" style="margin:2px 0 6px">'+esc(tname(a.authorId))+' \u00b7 '+esc(new Date(a.createdAt||Date.now()).toLocaleDateString())+'</div><div>'+esc(a.body)+'</div></div>'+(isAdmin?'<button class="x" data-act="delAnnouncement" data-id="'+esc(id)+'">&times;</button>':'')+'</div>'});
+  h+='</div>';
+  return h;
+}
+
+/* ---------- student report ---------- */
+var REPORT_CSS='.rp-head{display:flex;justify-content:space-between;gap:12px;border-bottom:2px solid #3b82f6;padding-bottom:10px;margin-bottom:14px}.rp-school{font-size:20px;font-weight:800;color:#2563eb}.rp-name{margin:4px 0 2px;font-size:22px}.rp-table{width:100%;border-collapse:collapse;margin:8px 0 16px}.rp-table th,.rp-table td{border-bottom:1px solid #e4ebf4;padding:7px 6px;text-align:left;font-size:13.5px}.rp-table th{font-size:11px;text-transform:uppercase;color:#6f8097;letter-spacing:.04em}.rp-sub{margin:16px 0 4px;font-size:15px;font-weight:700}.rp-cm{background:#f3f7fc;border-left:3px solid #3b82f6;padding:8px 10px;margin:6px 0;font-size:13.5px}.rp-sign{display:flex;gap:30px;margin-top:40px}.rp-sign div{flex:1;border-top:1px solid #6f8097;padding-top:4px;font-size:12px;color:#6f8097}.rp-mut{color:#6f8097;font-size:13px}';
+document.getElementById('rpcss').textContent=REPORT_CSS;
+function remark(v){return v==null?'\u2013':v>=85?'Excellent':v>=70?'Good':v>=50?'Satisfactory':'Needs support'}
+function reportBody(sid){
+  var s=roster[sid],en=enrolled(sid).sort(),a=overall(sid);
+  var h='<div class="rp-head"><div><div class="rp-school">'+esc(schoolName)+'</div><div class="rp-mut">Student progress report</div></div><div class="rp-mut" style="text-align:right">Issued '+esc(today())+'</div></div>';
+  var rAge=ageFrom(s.dob);h+='<h2 class="rp-name">'+esc(s.name)+'</h2><p class="rp-mut" style="margin:0 0 10px">Class '+esc(s.level||'\u2013')+(rAge!=null?' \u00b7 age '+rAge:'')+(s.career?' \u00b7 aspiring '+esc(s.career):'')+'</p><p class="rp-mut" style="margin:0 0 10px">Overall average <b>'+fmt(a)+'</b> ('+remark(a)+') \u00b7 Absences '+absTotal(sid)+' ('+absTotal(sid,true)+' unexcused)'+(s.email?' \u00b7 '+esc(s.email):'')+'</p>';
+  h+='<table class="rp-table"><tr><th>Code</th><th>Subject</th><th>Teacher</th><th>Average</th><th>Absences</th><th>Result</th></tr>';
+  en.forEach(function(c){var v=subjectAvg(sid,c),e=validEntry(sid,c)||{absences:[]};
+    h+='<tr><td><b>'+esc(c)+'</b></td><td>'+esc(subjects[c].name)+'</td><td>'+esc(tname(subjects[c].teacherId))+'</td><td>'+fmt(v)+'</td><td>'+(e.absences||[]).length+'</td><td>'+remark(v)+'</td></tr>'});
+  if(!en.length)h+='<tr><td colspan="6" class="rp-mut">No subjects assigned.</td></tr>';
+  h+='</table>';
+  en.forEach(function(c){var e=validEntry(sid,c)||{grades:[],absences:[]};
+    h+='<div class="rp-sub">'+esc(c)+' \u00b7 '+esc(subjects[c].name)+'</div>';
+    if((e.grades||[]).length){h+='<table class="rp-table"><tr><th>Assessment</th><th>Type</th><th>Score</th><th>%</th></tr>'+e.grades.map(function(g){var p=+g.max>0&&g.score!==''?+g.score/+g.max*100:null;return '<tr><td>'+esc(g.title)+'</td><td>'+esc(g.type)+'</td><td>'+esc(g.score)+' / '+esc(g.max)+'</td><td>'+fmt(p)+'</td></tr>'}).join('')+'</table>'}
+    else h+='<p class="rp-mut" style="margin:2px 0">No grades recorded.</p>';
+    if((e.absences||[]).length)h+='<p class="rp-mut" style="margin:2px 0">Absent: '+e.absences.slice().sort(function(x,y){return x.date<y.date?-1:1}).map(function(x){return esc(x.date)+(x.excused?' (excused)':'')}).join(', ')+'</p>';
+    if(e.comment)h+='<div class="rp-cm">'+esc(e.comment)+' <span class="rp-mut">\u2014 '+esc(tname(subjects[c].teacherId))+'</span></div>';
+  });
+  h+='<div class="rp-sign"><div>Class teacher</div><div>Head teacher</div><div>Parent / guardian</div></div>';
+  return h;
+}
+function reportView(sid){
+  return '<div class="row noprint" style="margin-bottom:12px"><button class="p" data-act="print">Print / save as PDF</button><button data-act="dlReport">Download report</button></div><div class="card report">'+reportBody(sid)+'</div>';
+}
+function dlReport(sid){
+  if(!roster[sid])return;
+  var doc='<!DOCTYPE html><html><head><meta charset="utf-8"><title>Report - '+esc(roster[sid].name)+'</title><style>body{font:14px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:820px;margin:24px auto;padding:0 16px;color:#1e2b3c}'+REPORT_CSS+'</style></head><body>'+reportBody(sid)+'</body></html>';
+  saveFile('report-'+(roster[sid].name||'student').replace(/[^\w-]+/g,'_')+'.html',doc,'text/html;charset=utf-8');
+}
+
+/* ---------- events ---------- */
+function val(id){var e=document.getElementById(id);return e?e.value.trim():''}
+document.getElementById('back').onclick=function(){if(report){report=null;draw();return}sel=null;draw()};
+document.getElementById('tabs').addEventListener('click',function(e){var t=e.target.closest('[data-tab]');if(!t)return;tab=t.dataset.tab;sel=null;report=null;clsOpen=null;clsAssignFor=null;banner='';draw()});
+var app=document.getElementById('app');
+app.addEventListener('click',function(e){
+  var t=e.target.closest('[data-act]');if(!t)return;
+  var act=t.dataset.act,code=t.dataset.code,i=+t.dataset.i;
+  if(act==='open'){sel=t.dataset.id;banner='';draw();window.scrollTo(0,0);return}
+  if(act==='pickTeacher'){
+    if(assignFor==='new')newTeacher=t.dataset.pid;
+    else if(subjects[assignFor]){var s=clone(subjects[assignFor]);s.teacherId=t.dataset.pid;subjects[assignFor]=s;put('subjects/'+assignFor,s)}
+    assignFor=null;render();return}
+  if(act==='cancelPick'){assignFor=null;draw();return}
+  if(act==='openClass'){clsOpen=(clsOpen===t.dataset.level)?null:t.dataset.level;draw();return}
+  if(act==='clsAdd'){if(!canEditClass(t.dataset.level))return;var cp=document.getElementById('clsPick');if(!cp||!cp.value)return;moveStudentToClass(cp.value,t.dataset.level);return}
+  if(act==='clsRemove'){if(!canEditClass(clsOpen))return;moveStudentToClass(t.dataset.id,'');return}
+  if(act==='pickClsTeacher'){clsAssignFor='new';draw();openClsPicker();return}
+  if(act==='clsTeacherBtn'){if(!isAdmin)return;clsAssignFor=t.dataset.level;draw();openClsPicker();return}
+  if(act==='cancelClsPick'){clsAssignFor=null;draw();return}
+  if(act==='pickClsTeacherResult'){
+    if(clsAssignFor==='new')newClsTeacher=t.dataset.pid;
+    else if(classes[clsAssignFor]){var cc=clone(classes[clsAssignFor]);cc.formTeacherId=t.dataset.pid;classes[clsAssignFor]=cc;put('classes/'+clsAssignFor,cc)}
+    clsAssignFor=null;render();return}
+  if(act==='addClass'){if(!isAdmin)return;var cn=val('clsName');if(!cn)return;if(classes[cn]){banner='Class '+cn+' already exists.';draw();return}
+    var cobj={name:cn,formTeacherId:newClsTeacher||null};classes[cn]=cobj;put('classes/'+cn,clone(cobj));newClsTeacher=null;document.getElementById('clsName').value='';banner='';render();return}
+  if(act==='delClass'){if(!isAdmin)return;if(confirm('Delete class '+t.dataset.level+'? Students keep their class label but it stops appearing here until recreated.')){var dl=t.dataset.level;delete classes[dl];if(clsOpen===dl)clsOpen=null;del('classes/'+dl);render()}return}
+  if(act==='addAnnouncement'){if(!isAdmin)return;var atitle2=val('anTitle'),abody=val('anBody');if(!atitle2||!abody)return;
+    var an={title:atitle2,body:abody,authorId:myId,createdAt:Date.now()};var anid=uid();announcements[anid]=an;put('announcements/'+anid,clone(an));
+    document.getElementById('anTitle').value='';document.getElementById('anBody').value='';banner='';render();return}
+  if(act==='delAnnouncement'){if(!isAdmin)return;if(confirm('Delete this announcement?')){var dlid=t.dataset.id;delete announcements[dlid];del('announcements/'+dlid);render()}return}
+  if(act==='addBreak'){if(!isAdmin)return;breaks=breaks.concat([{id:uid(),label:'Break',start:'10:00',end:'10:15'}]);put('config/breaks',{list:clone(breaks)});render();return}
+  if(act==='delBreak'){if(!isAdmin)return;breaks=breaks.filter(function(x,idx){return idx!==i});put('config/breaks',{list:clone(breaks)});render();return}
+  if(act==='addHoliday'){if(!isAdmin)return;var hd=val('hDate'),htl=val('hTitle');if(!hd||!htl)return;
+    var hobj={date:hd,title:htl,type:(document.getElementById('hType')||{}).value||'holiday'};var hid=uid();holidays[hid]=hobj;put('holidays/'+hid,clone(hobj));
+    document.getElementById('hTitle').value='';render();return}
+  if(act==='delHoliday'){if(!isAdmin)return;if(confirm('Delete this entry?')){var dhid=t.dataset.id;delete holidays[dhid];del('holidays/'+dhid);render()}return}
+  if(act==='openAssignment'){asgOpen=(asgOpen===t.dataset.id)?null:t.dataset.id;draw();return}
+  if(act==='delAssignment'){var da=assignments[t.dataset.id];if(!da||!(isAdmin||da.teacherId===myId))return;if(confirm('Delete this assignment? Scores already entered stay on student records.')){var aid=t.dataset.id;delete assignments[aid];if(asgOpen===aid)asgOpen=null;del('assignments/'+aid);render()}return}
+  if(act==='addAssignment'){
+    if(!canEditSub(asgCode)){banner='You cannot add assignments to '+asgCode+'.';draw();return}
+    var atitle=val('aTitle');if(!atitle)return;
+    var na={code:asgCode,teacherId:subjects[asgCode].teacherId,title:atitle,instructions:'',type:val('aType'),dueDate:val('aDue'),points:+val('aPts')||100,link:val('aLink'),createdAt:Date.now()};
+    var naid=uid();assignments[naid]=na;put('assignments/'+naid,clone(na));
+    document.getElementById('aTitle').value='';document.getElementById('aLink').value='';banner='';render();return}
+  if(act==='asgStatus'){var asid=t.dataset.sid,aaid=t.dataset.aid,aa=assignments[aaid];if(!aa||!canEditSub(aa.code))return;setAssignmentMark(asid,aa.code,aa,t.dataset.state,null);draw();return}
+  if(act==='report'){sel=t.dataset.id;report=t.dataset.id;tab='students';banner='';draw();window.scrollTo(0,0);return}
+  if(act==='print'){try{window.print()}catch(e){banner='Printing is not available here. Use your browser menu to print or save as PDF.';draw()}return}
+  if(act==='dlReport'){dlReport(report);return}
+  if(act==='addAllowed'){if(!isAdmin)return;var em=val('newEmail').toLowerCase();if(!em||em.indexOf('@')<0){banner='Enter a valid email address.';draw();return}
+    allowed[em]=true;put('allowed_emails/'+em,{addedAt:Date.now()});document.getElementById('newEmail').value='';banner='';render();return}
+  if(act==='delAllowed'){if(!isAdmin)return;var em2=t.dataset.email;if(em2===myEmail)return;if(confirm('Remove access for '+em2+'?')){delete allowed[em2];del('allowed_emails/'+em2);render()}return}
+  if(act==='enr'){if(!isAdmin)return;var epick=document.getElementById('enrPick');if(!epick||!epick.value)return;var es=roster[sel],elist=(es.subjects||[]).slice();if(elist.indexOf(epick.value)<0){elist.push(epick.value);es.subjects=elist;saveRoster(sel);render()}return}
+  if(act==='unenr'){if(!isAdmin)return;var us=roster[sel],ulist=(us.subjects||[]).slice(),uix=ulist.indexOf(code);if(uix>-1){ulist.splice(uix,1);us.subjects=ulist;saveRoster(sel);render()}return}
+  if(act==='saveTimes'){if(!isAdmin)return;var praw=val('periodTimes'),parr=praw.split(',').map(function(x){return x.trim()}).filter(Boolean);if(!parr.length)return;periodTimes=parr;put('config/periods',{times:parr});render();return}
+  if(!isAdmin&&!canEditSub(code))return;
+  if(act==='rc'){var rs=t.dataset.sid,stt=t.dataset.state;mutateEntry(rs,code,function(en){en.absences=en.absences.filter(function(a){return a.date!==rcDate});if(stt!=='present')en.absences.push({id:uid(),date:rcDate,note:'Roll call',excused:stt==='excused'})});return}
+  if(act==='rcAll'){Object.keys(roster).forEach(function(rid){if(enrolled(rid).indexOf(code)<0)return;var ve=validEntry(rid,code);if(ve&&(ve.absences||[]).some(function(a){return a.date===rcDate}))mutateEntry(rid,code,function(en){en.absences=en.absences.filter(function(a){return a.date!==rcDate})})});return}
+  if(act==='pickNew'){assignFor='new';draw();openPicker();return}
+  if(act==='assign'){assignFor=code;draw();openPicker();return}
+  if(act==='addSubject'){
+    var c=val('sCode').toUpperCase().replace(/[^A-Z0-9-]/g,''),n=val('sName');
+    if(!c||!n){banner='Enter a code and a name.';draw();return}
+    if(subjects[c]){banner='Code '+c+' already exists.';draw();return}
+    subjects[c]={code:c,name:n,teacherId:newTeacher||myId};put('subjects/'+c,clone(subjects[c]));newTeacher=null;banner='';
+    document.getElementById('sCode').value='';document.getElementById('sName').value='';syncTeacherSubs();render();return}
+  if(act==='delSubject'){if(confirm('Delete subject '+code+'? Marks stay stored but stop counting.')){delete subjects[code];del('subjects/'+code);syncTeacherSubs();render()}return}
+  if(act==='addStudent'){var nm=val('newName');if(!nm)return;var id=uid();roster[id]={name:nm,level:val('newLevel'),subjects:[]};saveRoster(id);document.getElementById('newName').value='';document.getElementById('newLevel').value='';render();return}
+  if(act==='delStudent'){if(confirm('Delete '+(roster[sel].name||'this student')+'?')){var d=sel;delete roster[d];del('roster/'+d);sel=null;render()}return}
+  if(act==='addGrade'){var sc=val('gs-'+code),mx=+val('gm-'+code);if(sc===''||!(mx>0))return;
+    var g={id:uid(),type:val('gt-'+code),title:val('gn-'+code)||'Untitled',date:today(),score:+sc,max:mx};
+    document.getElementById('gs-'+code).value='';document.getElementById('gn-'+code).value='';
+    mutateEntry(sel,code,function(en){en.grades.push(g)});return}
+  if(act==='delGrade'){mutateEntry(sel,code,function(en){en.grades.splice(i,1)});return}
+  if(act==='addAbsence'){var dt=val('ad-'+code);if(!dt)return;var ab={id:uid(),date:dt,note:val('an-'+code),excused:document.getElementById('ae-'+code).checked};
+    document.getElementById('an-'+code).value='';mutateEntry(sel,code,function(en){en.absences.push(ab)});return}
+  if(act==='delAbsence'){mutateEntry(sel,code,function(en){en.absences.splice(i,1)});return}
+});
+app.addEventListener('change',function(e){
+  var t=e.target;
+  if(t.id==='mineOnly'){mineOnly=t.checked;draw();return}
+  if(t.id==='rcSub'){rcCode=t.value;draw();return}
+  if(t.id==='rcDate'){rcDate=t.value||today();draw();return}
+  if(t.dataset.cm!=null){var cv=t.value;mutateEntry(sel,t.dataset.code,function(en){en.comment=cv});return}
+  if(t.dataset.sn!=null){if(!isAdmin)return;schoolName=t.value.trim()||'School Records';put('config/school',{name:schoolName});render();return}
+  if(t.dataset.w){if(!isAdmin)return;weights[t.dataset.w]=Math.max(0,+t.value||0);put('config/weights',clone(weights));render();return}
+  if(t.dataset.g!=null){var k=t.dataset.k,v=t.value;mutateEntry(sel,t.dataset.code,function(en){var g=en.grades[+t.dataset.g];if(g)g[k]=k==='title'?v:(v===''?'':+v)});return}
+  if(t.dataset.ex!=null){var c=t.checked;mutateEntry(sel,t.dataset.code,function(en){var a=en.absences[+t.dataset.ex];if(a)a.excused=c});return}
+  if(t.id==='asgCode'){asgCode=t.value;asgOpen=null;draw();return}
+  if(t.dataset.asgscore!=null){var ssid=t.dataset.asgscore,said=t.dataset.aid,sa=assignments[said];if(!sa||!canEditSub(sa.code))return;var sval=t.value===''?'':+t.value;setAssignmentMark(ssid,sa.code,sa,null,sval);return}
+  if(t.id==='ttTeacher'){ttTeacher=t.value;draw();return}
+  if(t.dataset.brk!=null){if(!isAdmin)return;var bi=+t.dataset.brk,bk=t.dataset.k,bv=t.value;
+    breaks=breaks.map(function(b,idx){if(idx!==bi)return b;var nb=clone(b);nb[bk]=bv;return nb});
+    put('config/breaks',{list:clone(breaks)});render();return}
+  if(t.id==='schLevel'){schLevel=t.value;draw();return}
+  if(t.dataset.sch!=null){if(!isAdmin)return;var g=clone((schedules[schLevel]&&schedules[schLevel].grid)||{});g[t.dataset.sch]=t.value;schedules[schLevel]=schedules[schLevel]||{};schedules[schLevel].grid=g;put('schedules/'+schLevel,{grid:g});render();return}
+  if(!isAdmin||!sel||!roster[sel])return;
+  var s=roster[sel];
+  if(t.dataset.f){s[t.dataset.f]=t.value.trim()}
+  else return;
+  saveRoster(sel);render();
+});
+app.addEventListener('input',function(e){
+  if(e.target.id==='search'){filter=e.target.value;draw()}
+  if(e.target.id==='tq')runSearch(e.target.value);
+  if(e.target.id==='cq')runSearchCls(e.target.value);
+});
+function runSearch(q){
+  var box=document.getElementById('tres');if(!box)return;
+  box.textContent='';
+  var hits=Object.keys(names).filter(function(id){return !q||(names[id].name||'').toLowerCase().indexOf(q.toLowerCase())>-1}).sort(function(a,b){return (names[a].name||'').localeCompare(names[b].name||'')});
+  if(!hits.length){var p=document.createElement('p');p.className='mut';p.textContent=q?'No matches.':'No one has signed in yet.';box.appendChild(p);return}
+  hits.forEach(function(id){var b=document.createElement('button');b.dataset.act='pickTeacher';b.dataset.pid=id;b.textContent=names[id].name||names[id].email||id;box.appendChild(b)});
+}
+function openPicker(){var q=document.getElementById('tq');if(q){q.focus();runSearch('')}}
+document.getElementById('csv').onclick=function(){
+  var rows=[['Name','Class','Subject code','Subject average %','Overall average %','Absences','Unexcused absences']];
+  Object.keys(roster).sort(function(a,b){return (roster[a].name||'').localeCompare(roster[b].name||'')}).forEach(function(id){
+    var s=roster[id],o=overall(id),en=enrolled(id);if(!en.length)en=[''];
+    en.forEach(function(c){var v=c?subjectAvg(id,c):null;rows.push([s.name,s.level,c,v==null?'':v.toFixed(1),o==null?'':o.toFixed(1),absTotal(id),absTotal(id,true)])})});
+  var csv=rows.map(function(r){return r.map(function(c){c=String(c==null?'':c);if(/^[=+\-@]/.test(c))c="'"+c;return '"'+c.replace(/"/g,'""')+'"'}).join(',')}).join('\n');
+  saveFile('class-summary.csv',csv,'text/csv;charset=utf-8');
+};
+init();
+})();
+</script>
+</body>
+</html>
