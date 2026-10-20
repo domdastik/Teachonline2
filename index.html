@@ -19,9 +19,22 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgb
 .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#60a5fa,#34d3a0);color:#fff;font-weight:800;display:grid;place-items:center;font-size:17px;flex:none}
 header h1{font-size:17px;margin:0;flex:1;min-width:110px;font-weight:700}
 .role{font-size:12px;background:var(--ac2);color:#2563eb;border-radius:999px;padding:3px 10px;font-weight:600}
-.tabs{display:flex;gap:4px;margin:10px auto 0;max-width:940px;background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:4px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.tabs button{flex:0 0 auto;border:0;background:transparent;color:var(--mut);font-weight:600;padding:8px 14px;white-space:nowrap}
-.tabs button.on{background:#fff;color:#2563eb;box-shadow:0 1px 4px rgba(30,60,110,.12)}
+#shell{display:flex;min-height:100vh}
+#menuBtn{padding:7px 11px;font-size:16px;line-height:1}
+#sidenav{position:fixed;top:0;bottom:0;left:0;width:230px;background:var(--card);border-right:1px solid var(--bd);z-index:20;transform:translateX(-100%);transition:transform .2s ease;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#sidenav.open{transform:translateX(0)}
+.sidehead{padding:16px 16px 10px;font-weight:700;font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+#sidenav .tabs{display:flex;flex-direction:column;gap:2px;background:transparent;border:0;border-radius:0;padding:4px 10px;overflow:visible}
+#sidenav .tabs button{flex:0 0 auto;width:100%;text-align:left;border:0;background:transparent;color:var(--mut);font-weight:600;padding:10px 10px;white-space:nowrap;border-radius:8px}
+#sidenav .tabs button.on{background:var(--ac2);color:#2563eb;box-shadow:none}
+#backdrop{position:fixed;inset:0;background:rgba(12,22,38,.4);z-index:15;display:none}
+#backdrop.open{display:block}
+#mainarea{flex:1;min-width:0}
+@media (min-width:860px){
+  #sidenav{position:static;transform:none;width:220px}
+  #backdrop{display:none!important}
+  #menuBtn{display:none}
+}
 main{max-width:940px;margin:0 auto;padding:16px 14px 30px}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:var(--sh)}
 h2{font-size:16px;margin:0 0 12px;font-weight:700}
@@ -88,17 +101,26 @@ textarea:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(59,130,246,.15);
 <style id="rpcss"></style>
 </head>
 <body>
-<header>
-  <div class="hrow">
-    <button id="back" hidden>&larr;</button>
-    <div class="logo">S</div><h1 id="title">School Records</h1>
-    <span class="role" id="role"></span>
-    <span id="userchip"></span>
-    <button id="csv" hidden>Export CSV</button>
+<div id="shell">
+  <nav id="sidenav">
+    <div class="sidehead">Menu</div>
+    <div class="tabs" id="tabs"></div>
+  </nav>
+  <div id="backdrop"></div>
+  <div id="mainarea">
+    <header>
+      <div class="hrow">
+        <button id="menuBtn" aria-label="Menu">&#9776;</button>
+        <button id="back" hidden>&larr;</button>
+        <div class="logo">S</div><h1 id="title">School Records</h1>
+        <span class="role" id="role"></span>
+        <span id="userchip"></span>
+        <button id="csv" hidden>Export CSV</button>
+      </div>
+    </header>
+    <main id="app"><p class="mut">Loading&hellip;</p></main>
   </div>
-  <div class="tabs" id="tabs"></div>
-</header>
-<main id="app"><p class="mut">Loading&hellip;</p></main>
+</div>
 
 <!--
   Firebase SDKs (compat build - works with plain script elements, no build step).
@@ -122,8 +144,7 @@ var FIREBASE_CONFIG = {
   storageBucket: "school-24da7.firebasestorage.app",
   messagingSenderId: "931185987043",
   appId: "1:931185987043:web:a1c4fd5f60ea56d20b64d6"
-};
-/* ===================================================================== */
+};/* ===================================================================== */
 
 var TYPES=['test','assignment','exam'];
 var DEFAULT_W={test:30,assignment:20,exam:50};
@@ -235,7 +256,7 @@ function syncTeacherSubs(){
 }
 function startApp(){
   if(started)return;started=true;
-  document.getElementById('csv').hidden=false;
+  document.getElementById('csv').hidden=false;document.getElementById('menuBtn').hidden=false;
   if(isAdmin)db.collection('allowed_emails').onSnapshot(function(s){var n={};s.docs.forEach(function(d){n[d.id]=true});allowed=n;draw()},function(){});
   db.collection('users').onSnapshot(function(s){var n={};s.docs.forEach(function(d){n[d.id]=clone(d.data())});names=n;draw()},function(){});
   db.collection('roster').onSnapshot(function(s){var n={};s.docs.forEach(function(d){n[d.id]=clone(d.data())});roster=n;if(sel&&!roster[sel])sel=null;if(report&&!roster[report])report=null;draw()},function(e){banner='Cannot read records ('+(e&&e.code)+').';draw()});
@@ -253,7 +274,7 @@ function startApp(){
 }
 function showGate(err){
   document.getElementById('tabs').innerHTML='';document.getElementById('role').textContent='';document.getElementById('userchip').innerHTML='';
-  document.getElementById('back').hidden=true;document.getElementById('csv').hidden=true;
+  document.getElementById('back').hidden=true;document.getElementById('csv').hidden=true;document.getElementById('menuBtn').hidden=true;closeMenu();
   document.getElementById('app').innerHTML='<div class="card gatewrap"><div class="logo" style="margin:0 auto 14px">S</div><h2 style="margin-bottom:6px">'+esc(schoolName)+'</h2><p class="mut" style="margin-top:0">Sign in with your school Google account to continue.</p>'+
     (err?'<div class="banner" style="text-align:left">'+esc(err)+'</div>':'')+'<button class="p" id="gsign" style="width:100%">Continue with Google</button><div class="mut" style="margin-top:14px;font-size:11px">Build: retry-3</div></div>';
   var b=document.getElementById('gsign');if(b)b.onclick=function(){
@@ -262,7 +283,7 @@ function showGate(err){
 }
 function showNotAuthorized(msg){
   document.getElementById('tabs').innerHTML='';document.getElementById('role').textContent='';document.getElementById('userchip').innerHTML='';
-  document.getElementById('back').hidden=true;document.getElementById('csv').hidden=true;
+  document.getElementById('back').hidden=true;document.getElementById('csv').hidden=true;document.getElementById('menuBtn').hidden=true;closeMenu();
   document.getElementById('app').innerHTML='<div class="card gatewrap"><h2>No access yet</h2><p class="mut">'+esc(myEmail)+' is signed in, but the administrator has not added this email to the school list.</p>'+
     (msg?'<div class="banner" style="text-align:left">'+esc(msg)+'</div>':'')+'<button id="so2">Sign out</button><div class="mut" style="margin-top:14px;font-size:11px">Build: retry-3</div></div>';
   var b=document.getElementById('so2');if(b)b.onclick=function(){auth.signOut()};
@@ -483,21 +504,46 @@ function subjectBlock(sid,code){
 
 /* ---------- roll call ---------- */
 function byName(a,b){return (roster[a].name||'').localeCompare(roster[b].name||'')}
+function dayCodeFor(dateStr){var d=new Date(dateStr+'T00:00:00');if(isNaN(d))return null;return ['SU','MO','TU','WE','TH','FR','SA'][d.getDay()]}
+function myLessonsForDay(teacherId,dayCode){
+  if(!dayCode)return [];
+  var tgrid=myTimetableFor(teacherId),out=[];
+  scheduleRows().forEach(function(r){if(r.kind!=='period')return;var hit=tgrid[dayCode+'-'+r.pi];if(hit)out.push({pi:r.pi,time:r.time,level:hit.level,code:hit.code})});
+  return out;
+}
 function rollView(){
-  var codes=Object.keys(subjects).filter(canEditSub).sort();
-  if(!codes.length)return '<div class="card"><p class="mut" style="margin:0">'+(isAdmin?'Create a subject code and assign a teacher first.':'You have no subject codes yet. Ask the owner to assign one.')+'</p></div>';
-  if(!rcCode||codes.indexOf(rcCode)<0)rcCode=codes[0];
-  var ids=Object.keys(roster).filter(function(id){return enrolled(id).indexOf(rcCode)>-1}).sort(byName);
-  var cnt={present:0,absent:0,excused:0},rows='';
-  ids.forEach(function(id){
-    var e=validEntry(id,rcCode)||{absences:[]},rec=(e.absences||[]).filter(function(a){return a.date===rcDate})[0];
-    var st=!rec?'present':(rec.excused?'excused':'absent');cnt[st]++;
-    rows+='<div class="rc-row"><div class="who">'+av(roster[id].name)+'<span>'+esc(roster[id].name)+'</span></div><div class="seg">'+
-      ['present','absent','excused'].map(function(s){return '<button data-act="rc" data-sid="'+esc(id)+'" data-code="'+esc(rcCode)+'" data-state="'+s+'" class="'+(st===s?'on-'+s:'')+'">'+s.charAt(0).toUpperCase()+s.slice(1)+'</button>'}).join('')+'</div></div>';
-  });
-  var h='<div class="card"><h2>Roll call</h2><div class="row"><select id="rcSub">'+codes.map(function(c){return '<option value="'+esc(c)+'"'+(c===rcCode?' selected':'')+'>'+esc(c)+' \u00b7 '+esc(subjects[c].name)+'</option>'}).join('')+'</select><input type="date" id="rcDate" value="'+esc(rcDate)+'" style="flex:0 0 auto"><button data-act="rcAll" data-code="'+esc(rcCode)+'">All present</button></div>'+
-    '<div class="row" style="margin-top:12px"><span class="chip g-ok">'+cnt.present+' present</span><span class="chip g-bad">'+cnt.absent+' absent</span><span class="chip g-mid">'+cnt.excused+' excused</span></div><p class="mut" style="margin-bottom:0">Everyone counts as present unless marked. Each tap saves straight away.</p></div>';
-  h+='<div class="card">'+(rows||'<p class="mut" style="margin:0">No students are enrolled in this subject yet.</p>')+'</div>';
+  var dayCode=dayCodeFor(rcDate),weekend=dayCode==='SA'||dayCode==='SU';
+  var lessons=isAdmin?[]:myLessonsForDay(myId,dayCode);
+  if(isAdmin){
+    var allCodes=Object.keys(subjects).sort();
+    if(!allCodes.length)return '<div class="card"><p class="mut" style="margin:0">Create a subject code first.</p></div>';
+    if(!rcCode||allCodes.indexOf(rcCode)<0)rcCode=allCodes[0];
+  }else if(!lessons.length){
+    rcCode=null;
+  }else if(!rcCode||!lessons.some(function(l){return l.code===rcCode})){
+    rcCode=lessons[0].code;
+  }
+  var h='<div class="card"><h2>Roll call</h2><div class="row"><input type="date" id="rcDate" value="'+esc(rcDate)+'" style="flex:0 0 auto">';
+  if(isAdmin)h+='<select id="rcSub">'+Object.keys(subjects).sort().map(function(c){return '<option value="'+esc(c)+'"'+(c===rcCode?' selected':'')+'>'+esc(c)+' \u00b7 '+esc(subjects[c].name)+'</option>'}).join('')+'</select>';
+  h+='</div>';
+  if(!isAdmin){
+    if(weekend)h+='<p class="mut" style="margin:10px 0 0">No lessons \u2014 it\u2019s the weekend.</p>';
+    else if(!lessons.length)h+='<p class="mut" style="margin:10px 0 0">You have no lessons on your timetable for this day. Check the Timetable tab, or ask the owner to fill in the Schedule.</p>';
+    else h+='<div class="row" style="margin-top:10px">'+lessons.map(function(l){return '<button data-act="pickLesson" data-code="'+esc(l.code)+'"'+(l.code===rcCode?' class="p"':'')+'>'+esc(l.time)+' \u00b7 '+esc(l.code)+' \u00b7 '+esc(l.level)+'</button>'}).join('')+'</div>';
+  }
+  if(rcCode)h+='<div class="row" style="margin-top:10px"><button data-act="rcAll" data-code="'+esc(rcCode)+'">All present</button></div>';
+  h+='</div>';
+  if(rcCode){
+    var ids=Object.keys(roster).filter(function(id){return enrolled(id).indexOf(rcCode)>-1}).sort(byName);
+    var cnt={present:0,absent:0,excused:0},rows='';
+    ids.forEach(function(id){
+      var e=validEntry(id,rcCode)||{absences:[]},rec=(e.absences||[]).filter(function(a){return a.date===rcDate})[0];
+      var st=!rec?'present':(rec.excused?'excused':'absent');cnt[st]++;
+      rows+='<div class="rc-row"><div class="who">'+av(roster[id].name)+'<span>'+esc(roster[id].name)+'</span></div><div class="seg">'+
+        ['present','absent','excused'].map(function(s){return '<button data-act="rc" data-sid="'+esc(id)+'" data-code="'+esc(rcCode)+'" data-state="'+s+'" class="'+(st===s?'on-'+s:'')+'">'+s.charAt(0).toUpperCase()+s.slice(1)+'</button>'}).join('')+'</div></div>';
+    });
+    h+='<div class="card"><div class="row" style="margin-bottom:10px"><span class="chip g-ok">'+cnt.present+' present</span><span class="chip g-bad">'+cnt.absent+' absent</span><span class="chip g-mid">'+cnt.excused+' excused</span></div>'+(rows||'<p class="mut" style="margin:0">No students are enrolled in this subject yet.</p>')+'</div>';
+  }
   return h;
 }
 
@@ -642,7 +688,10 @@ function dlReport(sid){
 /* ---------- events ---------- */
 function val(id){var e=document.getElementById(id);return e?e.value.trim():''}
 document.getElementById('back').onclick=function(){if(report){report=null;draw();return}sel=null;draw()};
-document.getElementById('tabs').addEventListener('click',function(e){var t=e.target.closest('[data-tab]');if(!t)return;tab=t.dataset.tab;sel=null;report=null;clsOpen=null;clsAssignFor=null;banner='';draw()});
+function closeMenu(){document.getElementById('sidenav').classList.remove('open');document.getElementById('backdrop').classList.remove('open')}
+document.getElementById('menuBtn').onclick=function(){document.getElementById('sidenav').classList.add('open');document.getElementById('backdrop').classList.add('open')};
+document.getElementById('backdrop').onclick=closeMenu;
+document.getElementById('tabs').addEventListener('click',function(e){var t=e.target.closest('[data-tab]');if(!t)return;tab=t.dataset.tab;sel=null;report=null;clsOpen=null;clsAssignFor=null;banner='';draw();closeMenu()});
 var app=document.getElementById('app');
 app.addEventListener('click',function(e){
   var t=e.target.closest('[data-act]');if(!t)return;
@@ -695,6 +744,7 @@ app.addEventListener('click',function(e){
   if(act==='unenr'){if(!isAdmin)return;var us=roster[sel],ulist=(us.subjects||[]).slice(),uix=ulist.indexOf(code);if(uix>-1){ulist.splice(uix,1);us.subjects=ulist;saveRoster(sel);render()}return}
   if(act==='saveTimes'){if(!isAdmin)return;var praw=val('periodTimes'),parr=praw.split(',').map(function(x){return x.trim()}).filter(Boolean);if(!parr.length)return;periodTimes=parr;put('config/periods',{times:parr});render();return}
   if(!isAdmin&&!canEditSub(code))return;
+  if(act==='pickLesson'){rcCode=t.dataset.code;draw();return}
   if(act==='rc'){var rs=t.dataset.sid,stt=t.dataset.state;mutateEntry(rs,code,function(en){en.absences=en.absences.filter(function(a){return a.date!==rcDate});if(stt!=='present')en.absences.push({id:uid(),date:rcDate,note:'Roll call',excused:stt==='excused'})});return}
   if(act==='rcAll'){Object.keys(roster).forEach(function(rid){if(enrolled(rid).indexOf(code)<0)return;var ve=validEntry(rid,code);if(ve&&(ve.absences||[]).some(function(a){return a.date===rcDate}))mutateEntry(rid,code,function(en){en.absences=en.absences.filter(function(a){return a.date!==rcDate})})});return}
   if(act==='pickNew'){assignFor='new';draw();openPicker();return}
