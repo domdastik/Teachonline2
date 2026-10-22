@@ -145,6 +145,8 @@ var FIREBASE_CONFIG = {
   storageBucket: "school-24da7.firebasestorage.app",
   messagingSenderId: "931185987043",
   appId: "1:931185987043:web:a1c4fd5f60ea56d20b64d6"
+  /* measurementId is shown in the Firebase console too, but this app doesn't
+     use Analytics, so there's nothing to paste it into — safe to ignore. */
 };
 /* ===================================================================== */
 
@@ -165,6 +167,14 @@ var db=null,auth=null,myId=null,myName='',myEmail='',isAdmin=false,started=false
 var tab='students',sel=null,filter='',mineOnly=null,banner='',assignFor=null,newTeacher=null,report=null,rcCode=null,rcDate=new Date().toISOString().slice(0,10),schoolName='School Records',schLevel='';
 
 function uid(){return Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4)}
+function genSubjectCode(name){
+  var words=(name||'').toUpperCase().replace(/[^A-Z0-9\s]/g,'').trim().split(/\s+/).filter(Boolean);
+  var base=words.length>1?words.map(function(w){return w[0]}).join('').slice(0,4):(words[0]||'SUB').slice(0,4);
+  if(base.length<2)base='SUB';
+  var code,tries=0;
+  do{code=base+String(100+Math.floor(Math.random()*900));tries++}while(subjects[code]&&tries<50);
+  return code;
+}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function clone(o){return JSON.parse(JSON.stringify(o))}
 function today(){return new Date().toISOString().slice(0,10)}
@@ -370,7 +380,7 @@ function subjectsView(){
   var codes=Object.keys(subjects).sort();
   var h='';
   if(can('subjects')){
-    h+='<div class="card"><h2>Add subject code</h2><div class="row"><input id="sCode" data-keep placeholder="Code (e.g. MATH101)" maxlength="12" style="max-width:150px"><input id="sName" data-keep placeholder="Subject name"></div><div class="row" style="margin-top:8px"><button data-act="pickNew">'+(newTeacher?'Teacher: '+esc(tname(newTeacher))+' (change)':'Choose teacher')+'</button><button class="p" data-act="addSubject">Create</button></div></div>';
+    h+='<div class="card"><h2>Add subject</h2><p class="mut" style="margin-top:0">A short code is generated automatically from the name.</p><div class="row"><input id="sName" data-keep placeholder="Subject name (e.g. Mathematics)" style="flex:1"></div><div class="row" style="margin-top:8px"><button data-act="pickNew">'+(newTeacher?'Teacher: '+esc(tname(newTeacher))+' (change)':'Choose teacher')+'</button><button class="p" data-act="addSubject">Create</button></div></div>';
     if(assignFor!==null)h+='<div class="card"><h2>Pick a teacher'+(assignFor==='new'?'':' for '+esc(assignFor))+'</h2><p class="mut" style="margin-top:0">Only people who have signed in at least once appear here. Ask them to open the site and sign in first.</p><input id="tq" placeholder="Search name" style="width:100%"><div id="tres"></div><div class="row" style="margin-top:8px"><button data-act="cancelPick">Cancel</button></div></div>';
   }
   h+='<div class="card"><h2>Subjects</h2><div class="scroll"><table><tr><th>Code</th><th>Name</th><th>Teacher</th><th>Students</th><th>Average</th><th></th></tr>';
@@ -742,11 +752,13 @@ app.addEventListener('click',function(e){
   if(act==='assign'){if(!can('subjects'))return;assignFor=code;draw();openPicker();return}
   if(act==='addSubject'){
     if(!can('subjects'))return;
-    var c=val('sCode').toUpperCase().replace(/[^A-Z0-9-]/g,''),n=val('sName');
-    if(!c||!n){banner='Enter a code and a name.';draw();return}
-    if(subjects[c]){banner='Code '+c+' already exists.';draw();return}
+    var n=val('sName');
+    if(!n){banner='Enter a subject name.';draw();return}
+    var dup=Object.keys(subjects).filter(function(x){return (subjects[x].name||'').toLowerCase()===n.toLowerCase()})[0];
+    if(dup){banner='A subject named "'+n+'" already exists (code '+dup+').';draw();return}
+    var c=genSubjectCode(n);
     subjects[c]={code:c,name:n,teacherId:newTeacher||myId};put('subjects/'+c,clone(subjects[c]));newTeacher=null;banner='';
-    document.getElementById('sCode').value='';document.getElementById('sName').value='';syncTeacherSubs();render();return}
+    document.getElementById('sName').value='';syncTeacherSubs();render();return}
   if(act==='delSubject'){if(!can('subjects'))return;if(confirm('Delete subject '+code+'? Marks stay stored but stop counting.')){delete subjects[code];del('subjects/'+code);syncTeacherSubs();render()}return}
 
   /* ---- classes (create, assign form teacher, or a form teacher's own roster edit) ---- */
