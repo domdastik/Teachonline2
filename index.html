@@ -100,6 +100,63 @@ textarea:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(138,21,56,.15);b
 .seg button.on-excused{background:var(--warnb);color:var(--warn)}
 .rc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd);flex-wrap:wrap}
 .rc-row:last-child{border-bottom:0}
+.rcday{font-family:system-ui,sans-serif;font-size:12px;font-weight:700;background:var(--ac2);color:var(--acdk);border-radius:999px;padding:2px 10px;margin-left:6px;vertical-align:middle;letter-spacing:.02em}
+.rct{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%}
+.rct th,.rct td{padding:7px 5px;border-bottom:1px solid var(--bd);text-align:center;vertical-align:middle;white-space:nowrap}
+.rct tbody tr:last-child td{border-bottom:0}
+.rct .stk{position:sticky;left:0;z-index:2;background:var(--card);text-align:left;min-width:142px;max-width:160px;white-space:normal;box-shadow:1px 0 0 var(--bd)}
+.rct thead th{vertical-align:top;font-weight:600;text-transform:none;letter-spacing:0;font-size:inherit;color:var(--tx)}
+.rct .ph{min-width:80px}
+.rct .ph b{display:block;font-family:var(--serif);font-size:15px;letter-spacing:.02em}
+.rct .ph span{display:block;font-size:11px;color:var(--mut);font-weight:500}
+.rct .ph.mine{background:var(--ac2);box-shadow:inset 0 -3px 0 var(--gold)}
+.rct .ph.now b{color:var(--ac)}
+.nowtag{display:inline-block;font-style:normal;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--ac);color:#fff;border-radius:999px;padding:1px 7px;margin-top:3px}
+.allp{display:block;margin:5px auto 0;padding:2px 8px;font-size:11px;border-radius:7px;color:var(--ok);border-color:#cfe3d3}
+.rct .cell{min-width:80px;transition:background .15s}
+.rct .cell.none{background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(60,30,20,.035) 6px 7px)}
+.rct .cell.ro{background:#f6f2ea}
+.rct .cell.excused{background:var(--warnb)}
+.rct .cell.unexcused{background:var(--badb)}
+.rct .cell .code{display:inline-block;margin-bottom:4px}
+.rct .cell .seg2{display:flex;width:max-content;margin:0 auto}
+.seg2{display:inline-flex;border:1px solid var(--bd);border-radius:10px;overflow:hidden;background:#fff}
+.seg2 button{border:0;border-radius:0;padding:6px 10px;min-width:34px;background:#fff;color:var(--mut);font-size:15px;line-height:1;transition:background .15s,color .15s}
+.seg2 button+button{border-left:1px solid var(--bd)}
+.seg2 button.on-p{background:var(--okb);color:var(--ok)}
+.seg2 button.on-a{background:var(--bad);color:#fff}
+.seg2 button.on-e{background:var(--warn);color:#fff}
+.seg2 button:active{transform:scale(.93)}
+.abtag{display:block;font-style:normal;font-size:10px;font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.abtag.excused{color:var(--warn)}.abtag.unexcused{color:var(--bad)}
+.rochip{display:inline-grid;place-items:center;min-width:26px;height:26px;border-radius:50%;font-size:12px;font-weight:700}
+.rochip.present{background:var(--okb);color:var(--ok)}.rochip.excused{background:#f3dc9a;color:var(--warn)}.rochip.unexcused{background:#efb8aa;color:var(--bad)}
+.tn{display:block;font-style:normal;font-size:10px;color:var(--mut);max-width:72px;margin:2px auto 0;overflow:hidden;text-overflow:ellipsis}
+.rct .brkcol{width:24px;min-width:24px;padding:0;background-color:var(--ac2);background-image:var(--lattice);background-size:32px 32px}
+.rct thead .brkcol{background-color:var(--ac);color:#fff}
+.vlab{writing-mode:vertical-rl;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:6px 0}
+.dsum{margin-top:3px}.dsum .chip{font-size:11px;padding:1px 8px}
+.rcm-back{position:fixed;inset:0;background:rgba(20,5,10,.5);z-index:40;animation:rcfade .15s ease-out}
+.rcmenu{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,340px);background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4);z-index:41;animation:rcpop .16s ease-out}
+.rcm-head{background-color:var(--ac);background-image:var(--lattice);background-size:32px 32px;color:#fff;padding:14px 16px 12px;border-bottom:2px solid var(--gold)}
+.rcm-head b{display:block;font-family:var(--serif);font-size:17px;letter-spacing:.02em}
+.rcm-head span{font-size:13px;opacity:.92}
+.rcm-body{padding:14px 16px 12px}
+.rcm-opt{display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:10px;border-radius:12px;border:2px solid var(--bd);background:#fff}
+.rcm-opt b{display:block;font-size:15px}
+.rcm-opt span{font-size:12px;color:var(--mut);font-weight:500}
+.rcm-opt.exc{border-color:#e6c46a;background:var(--warnb)}.rcm-opt.exc b{color:var(--warn)}
+.rcm-opt.unx{border-color:#e3a79a;background:var(--badb)}.rcm-opt.unx b{color:var(--bad)}
+.rcm-cancel{width:100%;border:0;background:transparent;color:var(--mut);font-weight:600}
+@media (max-width:520px){
+.rct .stk{min-width:98px;max-width:106px;padding:6px 6px}
+.rct .stk .avatar{display:none}
+.rct .stk .who{gap:0;font-size:13px;line-height:1.25}
+.rct .ph,.rct .cell{min-width:76px}
+.seg2 button{padding:6px 9px;min-width:32px}
+}
+@keyframes rcpop{from{opacity:0;transform:translate(-50%,-46%) scale(.96)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes rcfade{from{opacity:0}to{opacity:1}}
 .gatewrap{max-width:380px;margin:60px auto;text-align:center;overflow:hidden;padding-top:0}
 .gateband{position:relative;height:92px;margin:0 -16px;background-color:var(--ac);background-image:var(--lattice),linear-gradient(180deg,rgba(255,255,255,.05),rgba(0,0,0,.14));background-size:32px 32px,100% 100%}
 .gateband::after{content:"";position:absolute;left:0;right:0;bottom:0;height:12px;background:var(--key) repeat-x left bottom/18px 12px}
@@ -110,7 +167,7 @@ textarea:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(138,21,56,.15);b
 <style id="rpcss"></style>
 </head>
 <body>
-<div id="verbadge" style="position:fixed;bottom:6px;right:6px;z-index:50;font-size:10px;color:#73665a;background:#fffcf5;border:1px solid #e6d9bd;border-radius:6px;padding:2px 6px;opacity:.75">v: pattern-1</div>
+<div id="verbadge" style="position:fixed;bottom:6px;right:6px;z-index:50;font-size:10px;color:#73665a;background:#fffcf5;border:1px solid #e6d9bd;border-radius:6px;padding:2px 6px;opacity:.75">v: rollcall-1</div>
 <div id="shell">
   <nav id="sidenav">
     <div class="sidehead">Menu</div>
@@ -175,7 +232,7 @@ var activity={};
 var PERM_KEYS=['students','subjects','classes','schedule','holidays','announcements','viewTimetables'];
 var PERM_LABELS={students:'Manage students (add, edit, delete)',subjects:'Manage subjects & teacher assignment',classes:'Manage classes & form teacher assignment',schedule:'Edit class schedules, periods & breaks',holidays:'Edit holidays & events',announcements:'Post announcements',viewTimetables:'View any teacher\u2019s personal timetable'};
 var db=null,auth=null,myId=null,myName='',myEmail='',isAdmin=false,started=false;
-var tab='students',sel=null,filter='',mineOnly=null,banner='',assignFor=null,newTeacher=null,report=null,rcCode=null,rcDate=new Date().toISOString().slice(0,10),schoolName='School Records',schLevel='';
+var tab='students',sel=null,filter='',mineOnly=null,banner='',assignFor=null,newTeacher=null,report=null,rcCode=null,rcDate=today(),rcLevel='',rcPick=null,schoolName='School Records',schLevel='';
 
 function uid(){return Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4)}
 function genSubjectCode(name){
@@ -188,7 +245,7 @@ function genSubjectCode(name){
 }
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function clone(o){return JSON.parse(JSON.stringify(o))}
-function today(){return new Date().toISOString().slice(0,10)}
+function today(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
 function mean(a){return a.length?a.reduce(function(x,y){return x+y},0)/a.length:null}
 function fmt(v){return v==null?'\u2013':v.toFixed(1)+'%'}
 function cls(v){return v==null?'':v>=70?'g-ok':v>=50?'g-mid':'g-bad'}
@@ -353,6 +410,7 @@ function draw(){
   if(!started)return;
   document.title=schoolName||'School Records';
   var app=document.getElementById('app');
+  var rsEl=document.getElementById('rcScroll'),rsX=rsEl?rsEl.scrollLeft:0;
   var fid=document.activeElement&&document.activeElement.id;
   var keep={};app.querySelectorAll('[data-keep]').forEach(function(e){keep[e.id]=e.type==='checkbox'?e.checked:e.value});
   var codes=myCodes();
@@ -370,6 +428,7 @@ function draw(){
   else{back.hidden=true;title.textContent=schoolName;
     h+=tab==='subjects'?subjectsView():tab==='rollcall'?rollView():tab==='assignments'?assignmentsView():tab==='classes'?classesView():tab==='teachers'?teachersView():tab==='announcements'?announcementsView():tab==='schedule'?scheduleView():tab==='timetable'?teachersTimetableView():(tab==='years'&&isAdmin)?yearsView():(tab==='access'&&isAdmin)?accessView():classView(mine)}
   app.innerHTML=h;
+  var rs2=document.getElementById('rcScroll');if(rs2)rs2.scrollLeft=rsX;
   Object.keys(keep).forEach(function(id){var e=document.getElementById(id);if(!e)return;if(e.type==='checkbox')e.checked=keep[id];else e.value=keep[id]});
   if(fid==='search'||fid==='tq'){var el=document.getElementById(fid);if(el){el.focus();try{el.setSelectionRange(el.value.length,el.value.length)}catch(e){}}}
 }
@@ -538,52 +597,116 @@ function subjectBlock(sid,code){
   var aShown=0;
   (e.absences||[]).map(function(x,i){return {x:x,i:i}}).sort(function(p,q){return q.x.date<p.x.date?-1:1}).forEach(function(o){
     if(!inCurrentYear(o.x))return;aShown++;
-    h+='<tr><td>'+esc(o.x.date)+'</td><td>'+esc(o.x.note)+'</td><td>'+(ed?'<input type="checkbox" style="width:auto" data-ex="'+o.i+'" data-code="'+esc(code)+'"'+(o.x.excused?' checked':'')+'>':(o.x.excused?'yes':'no'))+'</td><td>'+(ed?'<button class="x" data-act="delAbsence" data-code="'+esc(code)+'" data-i="'+o.i+'">&times;</button>':'')+'</td></tr>'});
+    h+='<tr><td>'+esc(o.x.date)+(o.x.pi!=null?' \u00b7 P'+(o.x.pi+1):'')+'</td><td>'+esc(o.x.note)+'</td><td>'+(ed?'<input type="checkbox" style="width:auto" data-ex="'+o.i+'" data-code="'+esc(code)+'"'+(o.x.excused?' checked':'')+'>':(o.x.excused?'yes':'no'))+'</td><td>'+(ed?'<button class="x" data-act="delAbsence" data-code="'+esc(code)+'" data-i="'+o.i+'">&times;</button>':'')+'</td></tr>'});
   if(!aShown)h+='<tr><td colspan="4" class="mut">No absences recorded'+(currentYearId?' for '+esc((years[currentYearId]||{}).label||'this year'):'')+'.</td></tr>';
   return h+'</table></div></div>';
 }
 
 /* ---------- roll call ---------- */
 function byName(a,b){return (roster[a].name||'').localeCompare(roster[b].name||'')}
+var DAY_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 function dayCodeFor(dateStr){var d=new Date(dateStr+'T00:00:00');if(isNaN(d))return null;return ['SU','MO','TU','WE','TH','FR','SA'][d.getDay()]}
-function myLessonsForDay(teacherId,dayCode){
-  if(!dayCode)return [];
-  var tgrid=myTimetableFor(teacherId),out=[];
-  scheduleRows().forEach(function(r){if(r.kind!=='period')return;var hit=tgrid[dayCode+'-'+r.pi];if(hit)out.push({pi:r.pi,time:r.time,level:hit.level,code:hit.code})});
-  return out;
+function fmtDate(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+function shiftSchoolDay(s,n){var d=new Date(s+'T00:00:00');do{d.setDate(d.getDate()+n)}while(d.getDay()===0||d.getDay()===6);return fmtDate(d)}
+function mins(t){var m=/^(\d{1,2}):(\d{2})/.exec(t||'');return m?(+m[1])*60+(+m[2]):NaN}
+/* index of the period happening right now (only when viewing today), else -1 */
+function periodNow(){
+  if(rcDate!==today())return -1;
+  var d=new Date(),nm=d.getHours()*60+d.getMinutes();
+  for(var i=0;i<periodTimes.length;i++){
+    var s=mins(periodTimes[i]);if(isNaN(s))continue;
+    var next=Infinity;periodTimes.forEach(function(t2){var m2=mins(t2);if(m2>s&&m2<next)next=m2});
+    if(nm>=s&&nm<(next===Infinity?s+50:next))return i;
+  }
+  return -1;
+}
+/* classes in which the viewer has at least one editable lesson on this weekday */
+function rcClassOptions(dayCode){
+  return Object.keys(classes).sort().filter(function(lv){
+    var g=(schedules[lv]&&schedules[lv].grid)||{};
+    return Object.keys(g).some(function(k){var code=g[k];return k.indexOf(dayCode+'-')===0&&code&&subjects[code]&&canEditSub(code)});
+  });
+}
+/* the subject a student has in a given period (from their class's schedule), only if they are enrolled in it */
+function lessonCode(sid,dayCode,pi){
+  var lv=roster[sid].level,g=(lv&&schedules[lv]&&schedules[lv].grid)||{},code=g[dayCode+'-'+pi];
+  return (code&&subjects[code]&&enrolled(sid).indexOf(code)>-1)?code:null;
+}
+function firstPeriodOf(sid,dayCode,code){
+  var lv=roster[sid].level,g=(lv&&schedules[lv]&&schedules[lv].grid)||{};
+  for(var i=0;i<periodTimes.length;i++)if(g[dayCode+'-'+i]===code)return i;
+  return -1;
+}
+/* absence record covering one cell. Older records saved before periods existed have no period; they count towards the first period that subject runs that day. */
+function absAt(sid,code,dayCode,pi){
+  var e=validEntry(sid,code);if(!e)return null;
+  var fp=firstPeriodOf(sid,dayCode,code);
+  return (e.absences||[]).filter(function(a){return a.date===rcDate&&(a.pi===pi||(a.pi==null&&pi===fp))})[0]||null;
+}
+function setCell(sid,code,pi,status){
+  var fp=firstPeriodOf(sid,dayCodeFor(rcDate),code);
+  mutateEntry(sid,code,function(en){
+    en.absences=en.absences.filter(function(a){return !(a.date===rcDate&&(a.pi===pi||(a.pi==null&&pi===fp)))});
+    if(status!=='present')en.absences.push({id:uid(),date:rcDate,pi:pi,note:'Roll call',excused:status==='excused',year:currentYearId||null});
+  });
 }
 function rollView(){
   var dayCode=dayCodeFor(rcDate),weekend=dayCode==='SA'||dayCode==='SU';
-  var lessons=isAdmin?[]:myLessonsForDay(myId,dayCode);
-  if(isAdmin){
-    var allCodes=Object.keys(subjects).sort();
-    if(!allCodes.length)return '<div class="card"><p class="mut" style="margin:0">Create a subject code first.</p></div>';
-    if(!rcCode||allCodes.indexOf(rcCode)<0)rcCode=allCodes[0];
-  }else if(!lessons.length){
-    rcCode=null;
-  }else if(!rcCode||!lessons.some(function(l){return l.code===rcCode})){
-    rcCode=lessons[0].code;
-  }
-  var h='<div class="card"><h2>Roll call</h2><div class="row"><input type="date" id="rcDate" value="'+esc(rcDate)+'" style="flex:0 0 auto">';
-  if(isAdmin)h+='<select id="rcSub">'+Object.keys(subjects).sort().map(function(c){return '<option value="'+esc(c)+'"'+(c===rcCode?' selected':'')+'>'+esc(c)+' \u00b7 '+esc(subjects[c].name)+'</option>'}).join('')+'</select>';
-  h+='</div>';
-  if(!isAdmin){
-    if(weekend)h+='<p class="mut" style="margin:10px 0 0">No lessons \u2014 it\u2019s the weekend.</p>';
-    else if(!lessons.length)h+='<p class="mut" style="margin:10px 0 0">You have no lessons on your timetable for this day. Check the Timetable tab, or ask the owner to fill in the Schedule.</p>';
-    else h+='<div class="row" style="margin-top:10px">'+lessons.map(function(l){return '<button data-act="pickLesson" data-code="'+esc(l.code)+'"'+(l.code===rcCode?' class="p"':'')+'>'+esc(l.time)+' \u00b7 '+esc(l.code)+' \u00b7 '+esc(l.level)+'</button>'}).join('')+'</div>';
-  }
-  if(rcCode)h+='<div class="row" style="margin-top:10px"><button data-act="rcAll" data-code="'+esc(rcCode)+'">All present</button></div>';
-  h+='</div>';
-  if(rcCode){
-    var ids=Object.keys(roster).filter(function(id){return enrolled(id).indexOf(rcCode)>-1}).sort(byName);
-    var cnt={present:0,absent:0,excused:0},rows='';
-    ids.forEach(function(id){
-      var e=validEntry(id,rcCode)||{absences:[]},rec=(e.absences||[]).filter(function(a){return a.date===rcDate})[0];
-      var st=!rec?'present':(rec.excused?'excused':'absent');cnt[st]++;
-      rows+='<div class="rc-row"><div class="who">'+av(roster[id].name)+'<span>'+esc(roster[id].name)+'</span></div><div class="seg">'+
-        ['present','absent','excused'].map(function(s){return '<button data-act="rc" data-sid="'+esc(id)+'" data-code="'+esc(rcCode)+'" data-state="'+s+'" class="'+(st===s?'on-'+s:'')+'">'+s.charAt(0).toUpperCase()+s.slice(1)+'</button>'}).join('')+'</div></div>';
+  var dn=dayCode?DAY_NAMES[new Date(rcDate+'T00:00:00').getDay()]:'';
+  var h='<div class="card"><h2>Roll call <span class="rcday">'+esc(dn)+'</span></h2><div class="row">'+
+    '<button data-act="rcDay" data-d="-1" aria-label="Previous school day">&#8249;</button>'+
+    '<input type="date" id="rcDate" value="'+esc(rcDate)+'" style="flex:1;min-width:130px">'+
+    '<button data-act="rcDay" data-d="1" aria-label="Next school day">&#8250;</button>'+
+    '<button data-act="rcToday"'+(rcDate===today()?' class="p"':'')+'>Today</button></div>';
+  if(weekend){return h+'<p class="mut" style="margin:10px 0 0">No lessons \u2014 it\u2019s the weekend.</p></div>'}
+  var opts=rcClassOptions(dayCode);
+  if(!opts.length){return h+'<p class="mut" style="margin:10px 0 0">'+(isAdmin?'No class has lessons scheduled for this day. Fill in the Schedule tab first.':'You have no lessons on your timetable for this day. Check the Timetable tab, or ask the owner to fill in the Schedule.')+'</p></div>'}
+  if(opts.indexOf(rcLevel)<0)rcLevel=opts[0];
+  h+='<div class="row" style="margin-top:10px"><select id="rcClass" aria-label="Class">'+opts.map(function(l){return '<option'+(l===rcLevel?' selected':'')+'>'+esc(l)+'</option>'}).join('')+'</select></div></div>';
+
+  var studs=Object.keys(roster).filter(function(id){return roster[id].level===rcLevel}).sort(byName);
+  var rows=scheduleRows(),nowPi=periodNow(),mineSet={},tally={present:0,excused:0,unexcused:0},body='';
+  studs.forEach(function(sid){
+    var cells='',lessons=0,absent=0;
+    rows.forEach(function(r){
+      if(r.kind==='break'){cells+='<td class="brkcol"></td>';return}
+      var code=lessonCode(sid,dayCode,r.pi);
+      if(!code){cells+='<td class="cell none"><span class="mut">\u2013</span></td>';return}
+      var rec=absAt(sid,code,dayCode,r.pi),st=!rec?'present':(rec.excused?'excused':'unexcused'),ed=canEditSub(code);
+      lessons++;tally[st]++;if(st!=='present')absent++;if(ed)mineSet[r.pi]=true;
+      var tag='<span class="code">'+esc(code)+'</span>',at='data-sid="'+esc(sid)+'" data-code="'+esc(code)+'" data-pi="'+r.pi+'"';
+      if(ed){
+        cells+='<td class="cell '+st+' mine">'+tag+'<div class="seg2">'+
+          '<button class="'+(st==='present'?'on-p':'')+'" data-act="rcCell" '+at+' data-state="present" aria-label="Present">&#10003;</button>'+
+          '<button class="'+(st==='excused'?'on-e':(st==='unexcused'?'on-a':''))+'" data-act="rcCell" '+at+' data-state="absent" aria-label="Absent">&#10005;</button></div>'+
+          (st!=='present'?'<em class="abtag '+st+'">'+st+'</em>':'')+'</td>';
+      }else{
+        var tn=tname(subjects[code].teacherId);
+        cells+='<td class="cell '+st+' ro" title="'+esc(tn)+'">'+tag+'<div><span class="rochip '+st+'">'+(st==='present'?'&#10003;':(st==='excused'?'E':'A'))+'</span></div><em class="tn">'+esc((tn||'').split(' ')[0])+'</em></td>';
+      }
     });
-    h+='<div class="card"><div class="row" style="margin-bottom:10px"><span class="chip g-ok">'+cnt.present+' present</span><span class="chip g-bad">'+cnt.absent+' absent</span><span class="chip g-mid">'+cnt.excused+' excused</span></div>'+(rows||'<p class="mut" style="margin:0">No students are enrolled in this subject yet.</p>')+'</div>';
+    var sum=!lessons?'<span class="mut">no lessons</span>':(absent?'<span class="chip g-bad">'+absent+' absent</span>':'<span class="chip g-ok">all present</span>');
+    body+='<tr><td class="stk"><div class="who">'+av(roster[sid].name,28)+'<div><b>'+esc(roster[sid].name)+'</b><div class="dsum">'+sum+'</div></div></div></td>'+cells+'</tr>';
+  });
+  var head='<tr><th class="stk">Student <span class="mut">('+studs.length+')</span></th>';
+  rows.forEach(function(r){
+    if(r.kind==='break'){head+='<th class="brkcol"><span class="vlab">'+esc(r.b.label)+'</span></th>';return}
+    var mine=!!mineSet[r.pi],isNow=r.pi===nowPi;
+    head+='<th class="ph'+(mine?' mine':'')+(isNow?' now':'')+'"><b>P'+(r.pi+1)+'</b><span>'+esc(r.time)+'</span>'+(isNow?'<i class="nowtag">now</i>':'')+
+      (mine?'<button class="allp" data-act="rcColAll" data-pi="'+r.pi+'" title="Mark everyone present">&#10003; all</button>':'')+'</th>';
+  });
+  head+='</tr>';
+  h+='<div class="card"><div class="row" style="margin-bottom:8px"><span class="chip g-ok">'+tally.present+' present</span><span class="chip g-mid">'+tally.excused+' excused</span><span class="chip g-bad">'+tally.unexcused+' unexcused</span></div>'+
+    '<p class="mut" style="margin:0 0 10px">'+(isAdmin?'You can edit every period.':'Your periods are highlighted \u2014 tap \u2715 to record an absence. Other periods are view-only.')+'</p>'+
+    '<div class="scroll" id="rcScroll"><table class="rct"><thead>'+head+'</thead><tbody>'+(body||'<tr><td colspan="'+(rows.length+1)+'" class="mut">No students are in this class yet.</td></tr>')+'</tbody></table></div></div>';
+
+  if(rcPick&&roster[rcPick.sid]&&subjects[rcPick.code]){
+    var rp=rcPick;
+    h+='<div class="rcm-back" data-act="rcMenuClose"></div><div class="rcmenu" role="dialog" aria-modal="true"><div class="rcm-head"><b>Mark absent</b><span>'+esc(roster[rp.sid].name)+'</span></div><div class="rcm-body">'+
+      '<p class="mut" style="margin:0 0 12px">P'+(rp.pi+1)+' \u00b7 '+esc(periodTimes[rp.pi]||'')+' \u00b7 <span class="code">'+esc(rp.code)+'</span> \u00b7 '+esc(dn)+'</p>'+
+      '<button class="rcm-opt exc" data-act="rcMenuPick" data-state="excused"><b>Excused</b><span>Has a valid reason</span></button>'+
+      '<button class="rcm-opt unx" data-act="rcMenuPick" data-state="unexcused"><b>Unexcused</b><span>No reason given</span></button>'+
+      '<button class="rcm-cancel" data-act="rcMenuClose">Cancel</button></div></div>';
   }
   return h;
 }
@@ -755,7 +878,7 @@ function reportBody(sid){
     h+='<div class="rp-sub">'+esc(c)+' \u00b7 '+esc(subjects[c].name)+'</div>';
     if(eg.length){h+='<table class="rp-table"><tr><th>Assessment</th><th>Type</th><th>Score</th><th>%</th></tr>'+eg.map(function(g){var p=+g.max>0&&g.score!==''?+g.score/+g.max*100:null;return '<tr><td>'+esc(g.title)+'</td><td>'+esc(g.type)+'</td><td>'+esc(g.score)+' / '+esc(g.max)+'</td><td>'+fmt(p)+'</td></tr>'}).join('')+'</table>'}
     else h+='<p class="rp-mut" style="margin:2px 0">No grades recorded.</p>';
-    if(ea.length)h+='<p class="rp-mut" style="margin:2px 0">Absent: '+ea.slice().sort(function(x,y){return x.date<y.date?-1:1}).map(function(x){return esc(x.date)+(x.excused?' (excused)':'')}).join(', ')+'</p>';
+    if(ea.length)h+='<p class="rp-mut" style="margin:2px 0">Absent: '+ea.slice().sort(function(x,y){return x.date<y.date?-1:1}).map(function(x){return esc(x.date)+(x.pi!=null?' P'+(x.pi+1):'')+(x.excused?' (excused)':'')}).join(', ')+'</p>';
     if(e.comment)h+='<div class="rp-cm">'+esc(e.comment)+' <span class="rp-mut">\u2014 '+esc(tname(subjects[c].teacherId))+'</span></div>';
   });
   h+='<div class="rp-sign"><div>Class teacher</div><div>Head teacher</div><div>Parent / guardian</div></div>';
@@ -776,7 +899,8 @@ document.getElementById('back').onclick=function(){if(report){report=null;draw()
 function closeMenu(){document.getElementById('sidenav').classList.remove('open');document.getElementById('backdrop').classList.remove('open')}
 document.getElementById('menuBtn').onclick=function(){document.getElementById('sidenav').classList.add('open');document.getElementById('backdrop').classList.add('open')};
 document.getElementById('backdrop').onclick=closeMenu;
-document.getElementById('tabs').addEventListener('click',function(e){var t=e.target.closest('[data-tab]');if(!t)return;tab=t.dataset.tab;sel=null;report=null;clsOpen=null;clsAssignFor=null;accOpen=null;banner='';draw();closeMenu()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&rcPick){rcPick=null;draw()}});
+document.getElementById('tabs').addEventListener('click',function(e){var t=e.target.closest('[data-tab]');if(!t)return;tab=t.dataset.tab;sel=null;report=null;clsOpen=null;clsAssignFor=null;accOpen=null;rcPick=null;banner='';draw();closeMenu()});
 var app=document.getElementById('app');
 app.addEventListener('click',function(e){
   var t=e.target.closest('[data-act]');if(!t)return;
@@ -889,11 +1013,27 @@ app.addEventListener('click',function(e){
   if(act==='addStudent'){if(!can('students'))return;var nm=val('newName');if(!nm)return;var id=uid();roster[id]={name:nm,level:val('newLevel'),subjects:[]};saveRoster(id);document.getElementById('newName').value='';document.getElementById('newLevel').value='';render();return}
   if(act==='delStudent'){if(!can('students'))return;if(confirm('Delete '+(roster[sel].name||'this student')+'?')){var d=sel;logActivity('delete','Deleted student '+(roster[d].name||d));delete roster[d];del('roster/'+d);sel=null;render()}return}
 
+  /* ---- roll call table ---- */
+  if(act==='rcDay'){rcDate=shiftSchoolDay(rcDate,+t.dataset.d);rcPick=null;draw();return}
+  if(act==='rcToday'){rcDate=today();rcPick=null;draw();return}
+  if(act==='rcCell'){
+    var rcs=t.dataset.sid,rcc=t.dataset.code,rcp=+t.dataset.pi;
+    if(!canEditSub(rcc))return;
+    if(t.dataset.state==='present'){if(absAt(rcs,rcc,dayCodeFor(rcDate),rcp))setCell(rcs,rcc,rcp,'present');return}
+    rcPick={sid:rcs,code:rcc,pi:rcp};draw();return}
+  if(act==='rcMenuPick'){if(!rcPick||!canEditSub(rcPick.code))return;var rcq=rcPick;rcPick=null;setCell(rcq.sid,rcq.code,rcq.pi,t.dataset.state);return}
+  if(act==='rcMenuClose'){rcPick=null;draw();return}
+  if(act==='rcColAll'){
+    var cpi=+t.dataset.pi,cdc=dayCodeFor(rcDate),todo=[];
+    Object.keys(roster).filter(function(id){return roster[id].level===rcLevel}).forEach(function(sid){
+      var code=lessonCode(sid,cdc,cpi);if(code&&canEditSub(code)&&absAt(sid,code,cdc,cpi))todo.push([sid,code]);
+    });
+    if(!todo.length)return;
+    if(!confirm('Mark everyone present for P'+(cpi+1)+'? This clears '+todo.length+' recorded absence'+(todo.length===1?'':'s')+'.'))return;
+    todo.forEach(function(x){setCell(x[0],x[1],cpi,'present')});return}
+
   /* ---- roll call / grading: owner of the subject, or admin ---- */
   if(!isAdmin&&!canEditSub(code))return;
-  if(act==='pickLesson'){rcCode=t.dataset.code;draw();return}
-  if(act==='rc'){var rs=t.dataset.sid,stt=t.dataset.state;mutateEntry(rs,code,function(en){en.absences=en.absences.filter(function(a){return a.date!==rcDate});if(stt!=='present')en.absences.push({id:uid(),date:rcDate,note:'Roll call',excused:stt==='excused',year:currentYearId||null})});return}
-  if(act==='rcAll'){Object.keys(roster).forEach(function(rid){if(enrolled(rid).indexOf(code)<0)return;var ve=validEntry(rid,code);if(ve&&(ve.absences||[]).some(function(a){return a.date===rcDate}))mutateEntry(rid,code,function(en){en.absences=en.absences.filter(function(a){return a.date!==rcDate})})});return}
   if(act==='addGrade'){var sc=val('gs-'+code),mx=+val('gm-'+code);if(sc===''||!(mx>0))return;
     var g={id:uid(),type:val('gt-'+code),title:val('gn-'+code)||'Untitled',date:today(),score:+sc,max:mx,year:currentYearId||null};
     document.getElementById('gs-'+code).value='';document.getElementById('gn-'+code).value='';
@@ -906,8 +1046,8 @@ app.addEventListener('click',function(e){
 app.addEventListener('change',function(e){
   var t=e.target;
   if(t.id==='mineOnly'){mineOnly=t.checked;draw();return}
-  if(t.id==='rcSub'){rcCode=t.value;draw();return}
-  if(t.id==='rcDate'){rcDate=t.value||today();draw();return}
+  if(t.id==='rcClass'){rcLevel=t.value;rcPick=null;draw();return}
+  if(t.id==='rcDate'){rcDate=t.value||today();rcPick=null;draw();return}
   if(t.dataset.cm!=null){var cv=t.value;mutateEntry(sel,t.dataset.code,function(en){en.comment=cv});return}
   if(t.dataset.sn!=null){if(!isAdmin)return;schoolName=t.value.trim()||'School Records';put('config/school',{name:schoolName});render();return}
   if(t.dataset.w){if(!isAdmin)return;weights[t.dataset.w]=Math.max(0,+t.value||0);put('config/weights',clone(weights));render();return}
